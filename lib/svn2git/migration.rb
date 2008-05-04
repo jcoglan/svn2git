@@ -1,6 +1,8 @@
 module Svn2Git
   class Migration
   
+    attr_reader :dir
+    
     def initialize(url, options = {})
       @url = url
       @dir = @url.scan(/[^\/]+/).last
