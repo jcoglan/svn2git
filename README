@@ -69,11 +69,23 @@ To create a git repo from an existing svn repo:
 
   $ svn2git http://svn.yoursite.com/path/to/repo
 
-This will create a new directory called +repo+ containing the git version of the repository.
-If you're not using the standard trunk/branches/tags layout, you can pass arguments to tell
-git-svn what to look for:
+This will create a git repository in the current directory with the git version of the svn
+repository. If you're not using the standard trunk/branches/tags layout, you can pass arguments
+to tell git-svn what to look for:
 
   $ svn2git http://svn.yoursite.com/path/to/repo trunk=the_trunk tags=taggings
+
+=== Authors
+
+To convert all your svn authors to git format, create a file somewhere on your system with
+the list of conversions to make, one per line, for example:
+
+  jcoglan = James Coglan <jcoglan@never-you-mind.com>
+  stnick = Santa Claus <nicholas@lapland.com>
+
+Then pass an +authors+ option to +svn2git+ pointing to your file:
+
+  svn2git http://repos.com/myproject authors=~/authors.txt
 
 === GitHub integration
 

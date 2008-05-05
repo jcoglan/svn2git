@@ -6,12 +6,13 @@ module Svn2Git
     def initialize(url, options = {})
       @url = url
       @dir = @url.scan(/[^\/]+/).last
-      @run = "cd #{@dir} &&"
       
       @options = options
       @options[:trunk] ||= 'trunk'
       @options[:branches] ||= 'branches'
       @options[:tags] ||= 'tags'
+      
+      @authors = options[:authors]
     end
     
     def run!
@@ -27,13 +28,15 @@ module Svn2Git
       trunk = @options[:trunk]
       branches = @options[:branches]
       tags = @options[:tags]
-      puts `git svn clone --no-metadata --trunk=#{trunk} --branches=#{branches} --tags=#{tags} #{@url}`
+      `git svn init --no-metadata --trunk=#{trunk} --branches=#{branches} --tags=#{tags} #{@url}`
+      `git config svn.authorsfile #{@authors}` if @authors
+      `git svn fetch`
       get_branches
     end
     
     def get_branches
-      @branches = `#{@run} git branch -a`.split(/\n/)
-      @local = `#{@run} git branch`.split(/\n/)
+      @branches = `git branch -a`.split(/\n/)
+      @local = `git branch`.split(/\n/)
       @remote = @branches.find_all { |b| not @local.include?(b) }
       @tags = @remote.find_all { |b| b.strip =~ /^tags\// }
     end
@@ -41,8 +44,8 @@ module Svn2Git
     def fix_tags
       @tags.each do |tag|
         id = tag.scan(/[\d\.]+/).first
-        `#{@run} git checkout #{tag}`
-        `#{@run} git tag -a -m "Tagging release #{id}" #{id}`
+        `git checkout #{tag}`
+        `git tag -a -m "Tagging release #{id}" #{id}`
       end
     end
     
@@ -51,17 +54,17 @@ module Svn2Git
       svn_branches.each do |branch|
         branch = branch.strip
         next if branch == @options[:trunk]
-        `#{@run} git checkout #{branch}`
-        `#{@run} git checkout -b #{branch}`
+        `git checkout #{branch}`
+        `git checkout -b #{branch}`
       end
     end
     
     def fix_trunk
       trunk = @remote.find { |b| b.strip == @options[:trunk] }
       if trunk
-        `#{@run} git branch -D master`
-        `#{@run} git checkout trunk`
-        `#{@run} git checkout -f -b master`
+        `git branch -D master`
+        `git checkout trunk`
+        `git checkout -f -b master`
       end
     end
   
