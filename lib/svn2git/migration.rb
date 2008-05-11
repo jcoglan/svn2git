@@ -38,12 +38,12 @@ module Svn2Git
       @branches = `git branch -a`.split(/\n/)
       @local = `git branch`.split(/\n/)
       @remote = @branches.find_all { |b| not @local.include?(b) }
-      @tags = @remote.find_all { |b| b.strip =~ /^tags\// }
+      @tags = @remote.find_all { |b| b.strip =~ %r{^#{@options[:tags]}\/} }
     end
     
     def fix_tags
       @tags.each do |tag|
-        id = tag.scan(/[\d\.]+/).first
+        id = tag.gsub(%r{^#{@options[:tags]}\/}, '')
         `git checkout #{tag}`
         `git tag -a -m "Tagging release #{id}" #{id}`
       end
