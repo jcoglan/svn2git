@@ -43,7 +43,7 @@ module Svn2Git
     
     def fix_tags
       @tags.each do |tag|
-        id = tag.gsub(%r{^#{@options[:tags]}\/}, '')
+        id = tag.strip.gsub(%r{^#{@options[:tags]}\/}, '')
         `git checkout #{tag}`
         `git tag -a -m "Tagging release #{id}" #{id}`
       end
