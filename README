@@ -87,13 +87,3 @@ Then pass an +authors+ option to +svn2git+ pointing to your file:
 
   svn2git http://repos.com/myproject authors=~/authors.txt
 
-=== GitHub integration
-
-When creating your new git repo, svn2git can push your new repo to github.com if you pass
-in your username and project name. For example:
-
-  $ svn2git http://svn.jcoglan.com/packr github=jcoglan/packr
-
-You need to make sure the project exists on github before running this, and make sure you
-have your SSH key set up or this won't work.
-

@@ -5,7 +5,7 @@ spec = Gem::Specification.new do |spec|
   spec.name = "svn2git"
   spec.version = "1.0.0"
   spec.platform = Gem::Platform::RUBY
-  spec.summary = "A tool for migrating svn projects to git and github"
+  spec.summary = "A tool for migrating svn projects to git"
   
   spec.require_path = "lib"
   spec.files = FileList["lib/**/*"].to_a
@@ -16,7 +16,7 @@ spec = Gem::Specification.new do |spec|
   
   spec.author = "James Coglan"
   spec.email = "james@jcoglan.com"
-  spec.homepage = "http://blog.jcoglan.com/svn2git/"
+  spec.homepage = "http://github.com/jcoglan/svn2git/"
   
   spec.test_files = FileList["test/**/*"].to_a
   spec.has_rdoc = true

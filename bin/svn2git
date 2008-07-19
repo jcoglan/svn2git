@@ -32,5 +32,3 @@ end
 migration = Svn2Git::Migration.new(url, options)
 migration.run!
 
-Svn2Git::GitHub.push(migration, :to => options[:github]) if options[:github]
-
