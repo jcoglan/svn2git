@@ -28,9 +28,9 @@ module Svn2Git
       trunk = @options[:trunk]
       branches = @options[:branches]
       tags = @options[:tags]
-      `git svn init --no-metadata --trunk=#{trunk} --branches=#{branches} --tags=#{tags} #{@url}`
-      `git config svn.authorsfile #{@authors}` if @authors
-      `git svn fetch`
+      run_command("git svn init --no-metadata --trunk=#{trunk} --branches=#{branches} --tags=#{tags} #{@url}")
+      run_command("git config svn.authorsfile #{@authors}") if @authors
+      run_command("git svn fetch")
       get_branches
     end
     
@@ -44,8 +44,8 @@ module Svn2Git
     def fix_tags
       @tags.each do |tag|
         id = tag.strip.gsub(%r{^#{@options[:tags]}\/}, '')
-        `git checkout #{tag}`
-        `git tag -a -m "Tagging release #{id}" #{id}`
+        run_command("git checkout #{tag}")
+        run_command("git tag -a -m 'Tagging release #{id}' #{id}")
       end
     end
     
@@ -54,17 +54,25 @@ module Svn2Git
       svn_branches.each do |branch|
         branch = branch.strip
         next if branch == @options[:trunk]
-        `git checkout #{branch}`
-        `git checkout -b #{branch}`
+        run_command("git checkout #{branch}")
+        run_command("git checkout -b #{branch}")
       end
     end
     
     def fix_trunk
       trunk = @remote.find { |b| b.strip == @options[:trunk] }
       if trunk
-        `git checkout trunk`
-        `git branch -D master`
-        `git checkout -f -b master`
+        run_command("git checkout trunk")
+        run_command("git branch -D master")
+        run_command("git checkout -f -b master")
+      end
+    end
+    
+    def run_command(cmd)
+      IO.popen(cmd) do |stdout|
+        stdout.each do |line|
+          puts line if @options[:verbose]
+        end
       end
     end
   
