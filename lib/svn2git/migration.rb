@@ -62,8 +62,8 @@ module Svn2Git
     def fix_trunk
       trunk = @remote.find { |b| b.strip == @options[:trunk] }
       if trunk
-        `git branch -D master`
         `git checkout trunk`
+        `git branch -D master`
         `git checkout -f -b master`
       end
     end
