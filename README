@@ -87,3 +87,6 @@ Then pass an +authors+ option to +svn2git+ pointing to your file:
 
   svn2git http://repos.com/myproject authors=~/authors.txt
 
+Alternatively, you can place the authors file into ~/.svn2git/authors and svn2git will load
+it out of there.  This allows you to build up one authors file for all your projects and
+have it loaded for each repository that you migrate.

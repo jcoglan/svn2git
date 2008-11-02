@@ -1,4 +1,6 @@
 module Svn2Git
+  DEFAULT_AUTHORS_FILE = "~/.svn2git/authors"
+  
   class Migration
   
     attr_reader :dir
@@ -13,6 +15,9 @@ module Svn2Git
       @options[:tags] ||= 'tags'
       
       @authors = options[:authors]
+      if @authors.nil? && File.exists?(File.expand_path(DEFAULT_AUTHORS_FILE))
+        @authors = DEFAULT_AUTHORS_FILE
+      end
     end
     
     def run!
