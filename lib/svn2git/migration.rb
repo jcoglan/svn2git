@@ -58,14 +58,14 @@ module Svn2Git
       svn_branches = @remote.find_all { |b| not @tags.include?(b) }
       svn_branches.each do |branch|
         branch = branch.strip
-        next if branch == @options[:trunk]
+        next if branch == 'trunk'
         run_command("git checkout #{branch}")
         run_command("git checkout -b #{branch}")
       end
     end
     
     def fix_trunk
-      trunk = @remote.find { |b| b.strip == @options[:trunk] }
+      trunk = @remote.find { |b| b.strip == 'trunk' }
       if trunk
         run_command("git checkout trunk")
         run_command("git branch -D master")
