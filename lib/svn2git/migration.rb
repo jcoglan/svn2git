@@ -49,8 +49,11 @@ module Svn2Git
     def fix_tags
       @tags.each do |tag|
         id = tag.strip.gsub(%r{^#{@options[:tags]}\/}, '')
-        run_command("git checkout #{tag}")
-        run_command("git tag -a -m 'Tagging release #{id}' #{id}")
+        subject = `git log -1 --pretty=format:"%s" #{tag.strip()}`
+        date = `git log -1 --pretty=format:"%ci" #{tag.strip()}`
+        `export GIT_COMMITER_DATE="#{date}"`
+        run_command('git tag -a -m "#{subject}" "#{id.strip()}" "#{tag.strip()}^"')
+        run_command('git branch -d -r #{tag.strip()}')
       end
     end
     
@@ -70,6 +73,7 @@ module Svn2Git
         run_command("git checkout trunk")
         run_command("git branch -D master")
         run_command("git checkout -f -b master")
+        run_command("git branch -d -r trunk")
       end
     end
     
