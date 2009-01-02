@@ -60,9 +60,7 @@ module Svn2Git
     end
     
     def get_branches
-      @branches = `git branch -a`.split(/\n/)
-      @local = `git branch`.split(/\n/)
-      @remote = @branches.find_all { |b| not @local.include?(b) }
+      @remote = `git branch -r`.split(/\n/)
       @tags = @remote.find_all { |b| b.strip =~ %r{^#{@options[:tags]}\/} }
     end
     
