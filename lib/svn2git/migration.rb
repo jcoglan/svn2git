@@ -35,19 +35,22 @@ module Svn2Git
       branches = @options[:branches]
       tags = @options[:tags]
       rootistrunk = @options[:rootistrunk]
-      if (!rootistrunk.nil?())
+      
+      if (!rootistrunk.nil?)
         run_command("git svn init --no-metadata --trunk=#{@url}")
-      elsif (branches.nil?() and tags.nil?() and !trunk.nil?())
+      elsif (branches.nil? and tags.nil? and !trunk.nil?)
         run_command("git svn init --no-metadata --trunk=#{trunk} #{@url}")
-      elsif (branches.nil?() and !tags.nil?() and !trunk.nil?())
+      elsif (branches.nil? and !tags.nil? and !trunk.nil?)
         run_command("git svn init --no-metadata --trunk=#{trunk} --tags=#{tags} #{@url}")
-      elsif (!branches.nil?() and tags.nil?() and !trunk.nil?())
+      elsif (!branches.nil? and tags.nil? and !trunk.nil?)
         run_command("git svn init --no-metadata --trunk=#{trunk} --branches=#{branches} #{@url}")
       else
         run_command("git svn init --no-metadata --trunk=#{trunk} --branches=#{branches} --tags=#{tags} #{@url}")
       end
+      
       run_command("git config svn.authorsfile #{@authors}") if @authors
       run_command("git svn fetch")
+      
       @options[:tags] ||= 'tags'
       get_branches
     end
@@ -65,10 +68,8 @@ module Svn2Git
         subject = `git log -1 --pretty=format:"%s" #{tag.strip()}`
         date = `git log -1 --pretty=format:"%ci" #{tag.strip()}`
         `export GIT_COMMITER_DATE="#{date}"`
-        cmd = 'git tag -a -m "' + subject + '" "' + id.strip() + '" "' + tag.strip() + '^"'
-        run_command(cmd)
-        cmd = 'git branch -d -r ' + tag.strip()
-        run_command(cmd)
+        run_command("git tag -a -m '#{subject}' '#{id.strip()}' '#{tag.strip()}^'")
+        run_command("git branch -d -r #{tag.strip()}")
       end
     end
     
