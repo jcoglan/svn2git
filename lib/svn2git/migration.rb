@@ -10,9 +10,9 @@ module Svn2Git
       @dir = @url.scan(/[^\/]+/).last
       
       @options = options
-      #@options[:trunk] ||= 'trunk'
-      #@options[:branches] ||= 'branches'
-      #@options[:tags] ||= 'tags'
+      @options[:trunk] ||= 'trunk'
+      @options[:branches] ||= 'branches'
+      @options[:tags] ||= 'tags'
       
       @authors = options[:authors]
       if @authors.nil? && File.exists?(File.expand_path(DEFAULT_AUTHORS_FILE))
@@ -102,13 +102,21 @@ module Svn2Git
     end
     
     def run_command(cmd)
+      log "Running command: #{cmd}"
+      
       IO.popen(cmd) do |stdout|
         stdout.each do |line|
-          puts line if @options[:verbose]
+          log line
         end
       end
     end
-  
+
+    private
+    
+    def log(msg)
+      puts msg if @options[:verbose]
+    end
+
   end
 end
 
