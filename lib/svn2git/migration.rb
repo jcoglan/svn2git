@@ -38,12 +38,16 @@ module Svn2Git
       
       if (!rootistrunk.nil?)
         run_command("git svn init --no-metadata --trunk=#{@url}")
+        
       elsif (branches.nil? and tags.nil? and !trunk.nil?)
         run_command("git svn init --no-metadata --trunk=#{trunk} #{@url}")
+      
       elsif (branches.nil? and !tags.nil? and !trunk.nil?)
         run_command("git svn init --no-metadata --trunk=#{trunk} --tags=#{tags} #{@url}")
+      
       elsif (!branches.nil? and tags.nil? and !trunk.nil?)
         run_command("git svn init --no-metadata --trunk=#{trunk} --branches=#{branches} #{@url}")
+      
       else
         run_command("git svn init --no-metadata --trunk=#{trunk} --branches=#{branches} --tags=#{tags} #{@url}")
       end
