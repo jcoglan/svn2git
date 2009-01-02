@@ -10,9 +10,9 @@ module Svn2Git
       @dir = @url.scan(/[^\/]+/).last
       
       @options = options
-      @options[:trunk] ||= 'trunk'
-      @options[:branches] ||= 'branches'
-      @options[:tags] ||= 'tags'
+      #@options[:trunk] ||= 'trunk'
+      #@options[:branches] ||= 'branches'
+      #@options[:tags] ||= 'tags'
       
       @authors = options[:authors]
       if @authors.nil? && File.exists?(File.expand_path(DEFAULT_AUTHORS_FILE))
@@ -25,6 +25,7 @@ module Svn2Git
       fix_tags
       fix_branches
       fix_trunk
+      optimize_repos
     end
     
   private
@@ -33,9 +34,21 @@ module Svn2Git
       trunk = @options[:trunk]
       branches = @options[:branches]
       tags = @options[:tags]
-      run_command("git svn init --no-metadata --trunk=#{trunk} --branches=#{branches} --tags=#{tags} #{@url}")
+      rootistrunk = @options[:rootistrunk]
+      if (!rootistrunk.nil?())
+        run_command("git svn init --no-metadata --trunk=#{@url}")
+      elsif (branches.nil?() and tags.nil?() and !trunk.nil?())
+        run_command("git svn init --no-metadata --trunk=#{trunk} #{@url}")
+      elsif (branches.nil?() and !tags.nil?() and !trunk.nil?())
+        run_command("git svn init --no-metadata --trunk=#{trunk} --tags=#{tags} #{@url}")
+      elsif (!branches.nil?() and tags.nil?() and !trunk.nil?())
+        run_command("git svn init --no-metadata --trunk=#{trunk} --branches=#{branches} #{@url}")
+      else
+        run_command("git svn init --no-metadata --trunk=#{trunk} --branches=#{branches} --tags=#{tags} #{@url}")
+      end
       run_command("git config svn.authorsfile #{@authors}") if @authors
       run_command("git svn fetch")
+      @options[:tags] ||= 'tags'
       get_branches
     end
     
@@ -52,8 +65,10 @@ module Svn2Git
         subject = `git log -1 --pretty=format:"%s" #{tag.strip()}`
         date = `git log -1 --pretty=format:"%ci" #{tag.strip()}`
         `export GIT_COMMITER_DATE="#{date}"`
-        run_command('git tag -a -m "#{subject}" "#{id.strip()}" "#{tag.strip()}^"')
-        run_command('git branch -d -r #{tag.strip()}')
+        cmd = 'git tag -a -m "' + subject + '" "' + id.strip() + '" "' + tag.strip() + '^"'
+        run_command(cmd)
+        cmd = 'git branch -d -r ' + tag.strip()
+        run_command(cmd)
       end
     end
     
@@ -75,6 +90,10 @@ module Svn2Git
         run_command("git checkout -f -b master")
         run_command("git branch -d -r trunk")
       end
+    end
+    
+    def optimize_repos
+      run_command("git gc")
     end
     
     def run_command(cmd)
