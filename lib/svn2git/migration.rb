@@ -37,25 +37,25 @@ module Svn2Git
       rootistrunk = @options[:rootistrunk]
       
       if (!rootistrunk.nil?)
+        # Non-standard repository layout.  The repository root is effectively 'trunk.'
         run_command("git svn init --no-metadata --trunk=#{@url}")
-        
-      elsif (branches.nil? and tags.nil? and !trunk.nil?)
-        run_command("git svn init --no-metadata --trunk=#{trunk} #{@url}")
-      
-      elsif (branches.nil? and !tags.nil? and !trunk.nil?)
-        run_command("git svn init --no-metadata --trunk=#{trunk} --tags=#{tags} #{@url}")
-      
-      elsif (!branches.nil? and tags.nil? and !trunk.nil?)
-        run_command("git svn init --no-metadata --trunk=#{trunk} --branches=#{branches} #{@url}")
       
       else
-        run_command("git svn init --no-metadata --trunk=#{trunk} --branches=#{branches} --tags=#{tags} #{@url}")
+        cmd = "git svn init --no-metadata "
+        
+        # Add each component to the command that was passed as an argument.
+        cmd += "--trunk=#{trunk} " unless trunk.nil?
+        cmd += "--tags=#{tags} " unless tags.nil?
+        cmd += "--branches=#{branches} " unless branches.nil?
+        
+        cmd += @url
+        
+        run_command(cmd)
       end
       
       run_command("git config svn.authorsfile #{@authors}") if @authors
       run_command("git svn fetch")
       
-      @options[:tags] ||= 'tags'
       get_branches
     end
     
