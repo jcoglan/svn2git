@@ -3,7 +3,7 @@ require 'rake/gempackagetask'
 
 spec = Gem::Specification.new do |spec| 
   spec.name = "svn2git"
-  spec.version = "1.0.0"
+  spec.version = "1.1.0"
   spec.platform = Gem::Platform::RUBY
   spec.summary = "A tool for migrating svn projects to git"
   
