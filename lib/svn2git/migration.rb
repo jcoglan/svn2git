@@ -70,7 +70,7 @@ module Svn2Git
         subject = `git log -1 --pretty=format:"%s" #{tag.strip()}`
         date = `git log -1 --pretty=format:"%ci" #{tag.strip()}`
         `export GIT_COMMITER_DATE="#{date}"`
-        run_command("git tag -a -m '#{subject}' '#{id.strip()}'")
+        run_command("git tag -a -m '#{subject}' '#{id.strip()}' '#{tag.strip()}")
         run_command("git branch -d -r #{tag.strip()}")
       end
     end
