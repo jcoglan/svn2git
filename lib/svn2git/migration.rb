@@ -61,12 +61,12 @@ module Svn2Git
     
     def get_branches
       @remote = `git branch -r`.split(/\n/)
-      @tags = @remote.find_all { |b| b.strip =~ %r{^#{@options[:tags]}\/} }
+      @tags = @remote.find_all { |b| b.strip =~ %r{^tags\/} }
     end
     
     def fix_tags
       @tags.each do |tag|
-        id = tag.strip.gsub(%r{^#{@options[:tags]}\/}, '')
+        id = tag.strip.gsub(%r{^tags\/}, '')
         subject = `git log -1 --pretty=format:"%s" #{tag.strip()}`
         date = `git log -1 --pretty=format:"%ci" #{tag.strip()}`
         `export GIT_COMMITER_DATE="#{date}"`
