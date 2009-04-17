@@ -76,28 +76,28 @@ create a git repo from a svn repo in the specified layout.
 1. The svn repo is in the standard layout of (trunk, branches, tags) at the
 root level of the repo.
 
-  $ svn2git http://svn.yoursite.com/path/to/repo trunk=trunk branches=branches tags=tags
+  $ svn2git http://svn.yoursite.com/path/to/repo --trunk trunk --branches branches --tags tags
 
 2. The svn repo is NOT in standard layout and has only a trunk and tags at the
 root level of the repo.
 
-  $ svn2git http://svn.yoursite.com/path/to/repo trunk=trunk tags=tags
+  $ svn2git http://svn.yoursite.com/path/to/repo --trunk trunk --tags tags
 
 3. The svn repo is NOT in standard layout and has only a trunk and branches at
 the root level of the repo.
 
-  $ svn2git http://svn.yoursite.com/path/to/repo trunk=trunk branches=branches
+  $ svn2git http://svn.yoursite.com/path/to/repo --trunk trunk --branches branches
 
 4. The svn repo is NOT in standard layout and has only a trunk at the root
 level of the repo.
 
-  $ svn2git http://svn.yoursite.com/path/to/repo trunk=trunk
+  $ svn2git http://svn.yoursite.com/path/to/repo --trunk trunk
 
 5. The svn repo is NOT in standard layout and has no trunk, branches, or tags
 at the root level of the repo. Instead the root level of the repo is
 equivalent to the trunk and there are no tags or branches.
 
-  $ svn2git http://svn.yoursite.com/path/to/repo rootistrunk=true
+  $ svn2git http://svn.yoursite.com/path/to/repo --rootistrunk
 
 The above will create a git repository in the current directory with the git
 version of the svn repository. Hence, you need to make a directory that you
@@ -118,9 +118,19 @@ system with the list of conversions to make, one per line, for example:
 
 Then pass an +authors+ option to +svn2git+ pointing to your file:
 
-  svn2git http://repos.com/myproject authors=~/authors.txt
+  svn2git http://repos.com/myproject --authors ~/authors.txt
 
 Alternatively, you can place the authors file into ~/.svn2git/authors and
 svn2git will load it out of there. This allows you to build up one authors
 file for all your projects and have it loaded for each repository that you
 migrate.
+
+=== Debugging
+
+If you're having problems with converting your repository and you're not sure why,
+try turning on verbose logging.  This will print out more information from the
+underlying git-svn process.
+
+You can turn on verbose logging with the '-v' or '--verbose' flags, like so:
+
+  $ svn2git http://svn.yoursite.com/path/to/repo --verbose
