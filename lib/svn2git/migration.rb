@@ -1,25 +1,20 @@
+require 'optparse'
+require 'pp'
+
 module Svn2Git
   DEFAULT_AUTHORS_FILE = "~/.svn2git/authors"
-  
+
   class Migration
-  
+
     attr_reader :dir
-    
-    def initialize(url, options = {})
-      @url = url
-      @dir = @url.scan(/[^\/]+/).last
-      
-      @options = options
-      @options[:trunk] ||= 'trunk'
-      @options[:branches] ||= 'branches'
-      @options[:tags] ||= 'tags'
-      
-      @authors = options[:authors]
-      if @authors.nil? && File.exists?(File.expand_path(DEFAULT_AUTHORS_FILE))
-        @authors = DEFAULT_AUTHORS_FILE
-      end
+
+    def initialize(args)
+      @options = parse(args)
+      show_help_message('Too many arguments') if args.size > 1
+
+      @url = args.first
     end
-    
+
     def run!
       clone!
       fix_tags
@@ -27,43 +22,103 @@ module Svn2Git
       fix_trunk
       optimize_repos
     end
-    
+
+    def parse(args)
+      # Set up reasonable defaults for options.
+      options = {}
+      options[:verbose] = false
+      options[:rootistrunk] = false
+      options[:trunk] = 'trunk'
+      options[:branches] = 'branches'
+      options[:tags] = 'tags'
+
+      if File.exists?(File.expand_path(DEFAULT_AUTHORS_FILE))
+        options[:authors] = DEFAULT_AUTHORS_FILE
+      end
+
+
+      # Parse the command-line arguments.
+      @opts = OptionParser.new do |opts|
+        opts.banner = 'Usage: svn2git SVN_URL [options]'
+
+        opts.separator ''
+        opts.separator 'Specific options:'
+
+        opts.on('--trunk TRUNK_PATH', 'Subpath to trunk from repository URL (default: trunk)') do |trunk|
+          options[:trunk] = trunk
+        end
+
+        opts.on('--branches BRANCHES_PATH', 'Subpath to branches from repository URL (default: branches)') do |branches|
+          options[:branches] = branches
+        end
+
+        opts.on('--tags TAGS_PATH', 'Subpath to tags from repository URL (default: tags)') do |tags|
+          options[:tags] = tags
+        end
+
+        opts.on('--authors AUTHORS_FILE', "Path to file containing svn-to-git authors mapping (default: #{DEFAULT_AUTHORS_FILE})") do |authors|
+          options[:authors] = authors
+        end
+
+        opts.on('--rootistrunk', 'Use this if the root level of the repo isequivalent to the trunk and there are no tags or branches') do
+          options[:rootistrunk] = true
+        end
+
+        opts.on('-v', '--verbose', 'Be verbose in logging -- useful for debugging issues') do
+          options[:verbose] = true
+        end
+
+        opts.separator ""
+
+        # No argument, shows at tail.  This will print an options summary.
+        # Try it and see!
+        opts.on_tail('-h', '--help', 'Show this message') do
+          puts opts
+          exit
+        end
+      end
+
+      @opts.parse! args
+      options
+    end
+
   private
-    
+
     def clone!
       trunk = @options[:trunk]
       branches = @options[:branches]
       tags = @options[:tags]
       rootistrunk = @options[:rootistrunk]
-      
-      if (!rootistrunk.nil?)
+      authors = @options[:authors]
+
+      if rootistrunk
         # Non-standard repository layout.  The repository root is effectively 'trunk.'
         run_command("git svn init --no-metadata --trunk=#{@url}")
-      
+
       else
         cmd = "git svn init --no-metadata "
-        
+
         # Add each component to the command that was passed as an argument.
         cmd += "--trunk=#{trunk} " unless trunk.nil?
         cmd += "--tags=#{tags} " unless tags.nil?
         cmd += "--branches=#{branches} " unless branches.nil?
-        
+
         cmd += @url
-        
+
         run_command(cmd)
       end
-      
-      run_command("git config svn.authorsfile #{@authors}") if @authors
+
+      run_command("git config svn.authorsfile #{authors}") if authors
       run_command("git svn fetch")
-      
+
       get_branches
     end
-    
+
     def get_branches
       @remote = `git branch -r`.split(/\n/)
       @tags = @remote.find_all { |b| b.strip =~ %r{^#{@options[:tags]}\/} }
     end
-    
+
     def fix_tags
       @tags.each do |tag|
         id = tag.strip.gsub(%r{^#{@options[:tags]}\/}, '')
@@ -74,7 +129,7 @@ module Svn2Git
         run_command("git branch -d -r #{tag.strip()}")
       end
     end
-    
+
     def fix_branches
       svn_branches = @remote.find_all { |b| not @tags.include?(b) }
       svn_branches.each do |branch|
@@ -84,7 +139,7 @@ module Svn2Git
         run_command("git checkout -b #{branch}")
       end
     end
-    
+
     def fix_trunk
       trunk = @remote.find { |b| b.strip == 'trunk' }
       if trunk
@@ -94,14 +149,14 @@ module Svn2Git
         run_command("git branch -d -r trunk")
       end
     end
-    
+
     def optimize_repos
       run_command("git gc")
     end
-    
+
     def run_command(cmd)
       log "Running command: #{cmd}"
-      
+
       IO.popen(cmd) do |stdout|
         stdout.each do |line|
           log line
@@ -109,10 +164,14 @@ module Svn2Git
       end
     end
 
-    private
-    
     def log(msg)
       puts msg if @options[:verbose]
+    end
+
+    def show_help_message(msg)
+      puts "Error starting script: #{msg}\n\n"
+      puts @opts.help
+      exit
     end
 
   end
