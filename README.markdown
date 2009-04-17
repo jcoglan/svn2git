@@ -66,8 +66,8 @@ Installation
 
 Make sure you have git installed, then install the gem:
 
-  $ sudo apt-get install git-core git-svn
-  $ sudo gem install svn2git
+    $ sudo apt-get install git-core git-svn
+    $ sudo gem install nirvdrum-svn2git
 
 Usage
 -----
@@ -80,28 +80,28 @@ create a git repo from a svn repo in the specified layout.
 1. The svn repo is in the standard layout of (trunk, branches, tags) at the
 root level of the repo.
 
-  $ svn2git http://svn.yoursite.com/path/to/repo --trunk trunk --branches branches --tags tags
+    $ svn2git http://svn.yoursite.com/path/to/repo --trunk trunk --branches branches --tags tags
 
 2. The svn repo is NOT in standard layout and has only a trunk and tags at the
 root level of the repo.
 
-  $ svn2git http://svn.yoursite.com/path/to/repo --trunk trunk --tags tags
+    $ svn2git http://svn.yoursite.com/path/to/repo --trunk trunk --tags tags
 
 3. The svn repo is NOT in standard layout and has only a trunk and branches at
 the root level of the repo.
 
-  $ svn2git http://svn.yoursite.com/path/to/repo --trunk trunk --branches branches
+    $ svn2git http://svn.yoursite.com/path/to/repo --trunk trunk --branches branches
 
 4. The svn repo is NOT in standard layout and has only a trunk at the root
 level of the repo.
 
-  $ svn2git http://svn.yoursite.com/path/to/repo --trunk trunk
+    $ svn2git http://svn.yoursite.com/path/to/repo --trunk trunk
 
 5. The svn repo is NOT in standard layout and has no trunk, branches, or tags
 at the root level of the repo. Instead the root level of the repo is
 equivalent to the trunk and there are no tags or branches.
 
-  $ svn2git http://svn.yoursite.com/path/to/repo --rootistrunk
+    $ svn2git http://svn.yoursite.com/path/to/repo --rootistrunk
 
 The above will create a git repository in the current directory with the git
 version of the svn repository. Hence, you need to make a directory that you
