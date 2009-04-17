@@ -10,6 +10,7 @@ module Svn2Git
 
     def initialize(args)
       @options = parse(args)
+      show_help_message("Missing SVN_URL parameter") if args.empty?
       show_help_message('Too many arguments') if args.size > 1
 
       @url = args.first
