@@ -25,13 +25,5 @@ gem 'svn2git'
 
 require 'svn2git'
 
-url = ARGV.shift
-options = ARGV.inject({}) do |memo, arg|
-  parts = arg.split('=')
-  memo[parts.first.to_sym] = parts.last
-  memo
-end
-
-migration = Svn2Git::Migration.new(url, options)
+migration = Svn2Git::Migration.new(ARGV)
 migration.run!
-
