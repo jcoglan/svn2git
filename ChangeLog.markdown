@@ -1,3 +1,7 @@
+# 1.2.1 - 2009-04-19
+
+  * Fixed a problem with the svn2git binary not loading command-line args properly.
+
 # 1.2.0 - 2009-04-17
 
   * Reworked command-line options so they work similarly to every other app in the world.
