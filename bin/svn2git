@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 
 require 'rubygems'
-gem 'svn2git'
+gem 'nirvdrum-svn2git'
 
 require 'svn2git'
 
