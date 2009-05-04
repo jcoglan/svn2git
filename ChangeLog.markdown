@@ -1,3 +1,15 @@
+# 1.2.4 - 2009-05-04
+
+  * No changes.  I ran the jeweler command twice inadvertently.  Tearing down the release would be more harmful than helpful.
+
+# 1.2.3 - 2009-05-04
+
+  * Yanked out the code referencing the gem by name.  This shouldn't be necessary at all.
+
+# 1.2.2 - 2009-05-04
+
+  * Updated the reference gem in the binary to use this one and not the one on RubyForge.
+
 # 1.2.1 - 2009-04-19
 
   * Fixed a problem with the svn2git binary not loading command-line args properly.
