@@ -103,6 +103,11 @@ equivalent to the trunk and there are no tags or branches.
 
     $ svn2git http://svn.yoursite.com/path/to/repo --rootistrunk
 
+6. The svn repo is in the standard layout but you want to exclude the massive
+doc directory and the backup files you once accidently added.
+
+        $ svn2git http://svn.example.com/path/to/repo --exclude doc --exclude '.*~$'
+
 The above will create a git repository in the current directory with the git
 version of the svn repository. Hence, you need to make a directory that you
 want your new git repo to exist in, change into it and then run one of the

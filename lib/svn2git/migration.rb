@@ -32,6 +32,7 @@ module Svn2Git
       options[:trunk] = 'trunk'
       options[:branches] = 'branches'
       options[:tags] = 'tags'
+      options[:exclude] = []
 
       if File.exists?(File.expand_path(DEFAULT_AUTHORS_FILE))
         options[:authors] = DEFAULT_AUTHORS_FILE
@@ -65,6 +66,10 @@ module Svn2Git
           options[:rootistrunk] = true
         end
 
+        opts.on('--exclude REGEX', 'Specify a Perl regular expression to filter paths when fetching; can be used multiple times') do |regex|
+          options[:exclude] << regex
+        end
+
         opts.on('-v', '--verbose', 'Be verbose in logging -- useful for debugging issues') do
           options[:verbose] = true
         end
@@ -91,6 +96,7 @@ module Svn2Git
       tags = @options[:tags]
       rootistrunk = @options[:rootistrunk]
       authors = @options[:authors]
+      exclude = @options[:exclude]
 
       if rootistrunk
         # Non-standard repository layout.  The repository root is effectively 'trunk.'
@@ -110,7 +116,21 @@ module Svn2Git
       end
 
       run_command("git config svn.authorsfile #{authors}") if authors
-      run_command("git svn fetch")
+
+      cmd = "git svn fetch"
+      unless exclude.empty?
+        # Add exclude paths to the command line; some versions of git support
+        # this for fetch only, later also for init.
+        regex = []
+        unless rootistrunk
+          regex << "#{trunk}[/]" unless trunk.nil?
+          regex << "#{tags}[/][^/]+[/]" unless tags.nil?
+          regex << "#{branches}[/][^/]+[/]" unless branches.nil?
+        end
+        regex = '^(?:' + regex.join('|') + ')(?:' + exclude.join('|') + ')'
+        cmd += "'--ignore-paths=#{regex}'"
+      end
+      run_command(cmd)
 
       get_branches
     end
