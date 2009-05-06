@@ -13,50 +13,50 @@ Examples
 
 Say I have this code in svn:
 
-  trunk
-    ...
-  branches
-    1.x
-    2.x
-  tags
-    1.0.0
-    1.0.1
-    1.0.2
-    1.1.0
-    2.0.0
+    trunk
+      ...
+    branches
+      1.x
+      2.x
+    tags
+      1.0.0
+      1.0.1
+      1.0.2
+      1.1.0
+      2.0.0
 
 git-svn will go through the commit history to build a new git repo. It will
 import all branches and tags as remote svn branches, whereas what you really
 want is git-native local branches and git tag objects. So after importing this
 project I'll get:
 
-  $ git branch
-  * master
-  $ git branch -a
-  * master
-    1.x
-    2.x
-    tags/1.0.0
-    tags/1.0.1
-    tags/1.0.2
-    tags/1.1.0
-    tags/2.0.0
-    trunk
-  $ git tag -l
-  [ empty ]
+    $ git branch
+    * master
+    $ git branch -a
+    * master
+      1.x
+      2.x
+      tags/1.0.0
+      tags/1.0.1
+      tags/1.0.2
+      tags/1.1.0
+      tags/2.0.0
+      trunk
+    $ git tag -l
+    [ empty ]
 
 After svn2git is done with your project, you'll get this instead:
 
-  $ git branch
-  * master
-    1.x
-    2.x
-  $ git tag -l
-    1.0.0
-    1.0.1
-    1.0.2
-    1.1.0
-    2.0.0
+    $ git branch
+    * master
+      1.x
+      2.x
+    $ git tag -l
+      1.0.0
+      1.0.1
+      1.0.2
+      1.1.0
+      2.0.0
 
 Finally, it makes sure the HEAD of master is the same as the current trunk of
 the svn repo.
@@ -118,12 +118,12 @@ Authors
 To convert all your svn authors to git format, create a file somewhere on your
 system with the list of conversions to make, one per line, for example:
 
-  jcoglan = James Coglan <jcoglan@never-you-mind.com>
-  stnick = Santa Claus <nicholas@lapland.com>
+    jcoglan = James Coglan <jcoglan@never-you-mind.com>
+    stnick = Santa Claus <nicholas@lapland.com>
 
 Then pass an +authors+ option to +svn2git+ pointing to your file:
 
-  svn2git http://repos.com/myproject --authors ~/authors.txt
+    $ svn2git http://svn.example.com/path/to/repo --authors ~/authors.txt
 
 Alternatively, you can place the authors file into ~/.svn2git/authors and
 svn2git will load it out of there. This allows you to build up one authors
