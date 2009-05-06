@@ -61,7 +61,7 @@ module Svn2Git
           options[:authors] = authors
         end
 
-        opts.on('--rootistrunk', 'Use this if the root level of the repo isequivalent to the trunk and there are no tags or branches') do
+        opts.on('--rootistrunk', 'Use this if the root level of the repo is equivalent to the trunk and there are no tags or branches') do
           options[:rootistrunk] = true
         end
 
