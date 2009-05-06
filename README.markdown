@@ -80,30 +80,25 @@ create a git repo from a svn repo in the specified layout.
 1. The svn repo is in the standard layout of (trunk, branches, tags) at the
 root level of the repo.
 
-    $ svn2git http://svn.yoursite.com/path/to/repo --trunk trunk --branches branches --tags tags
+        $ svn2git http://svn.example.com/path/to/repo
 
 2. The svn repo is NOT in standard layout and has only a trunk and tags at the
 root level of the repo.
 
-    $ svn2git http://svn.yoursite.com/path/to/repo --trunk trunk --tags tags
+        $ svn2git http://svn.example.com/path/to/repo --trunk dev --tags rel --nobranches
 
-3. The svn repo is NOT in standard layout and has only a trunk and branches at
-the root level of the repo.
-
-    $ svn2git http://svn.yoursite.com/path/to/repo --trunk trunk --branches branches
-
-4. The svn repo is NOT in standard layout and has only a trunk at the root
+3. The svn repo is NOT in standard layout and has only a trunk at the root
 level of the repo.
 
-    $ svn2git http://svn.yoursite.com/path/to/repo --trunk trunk
+        $ svn2git http://svn.example.com/path/to/repo --trunk trunk --nobranches --notags
 
-5. The svn repo is NOT in standard layout and has no trunk, branches, or tags
+4. The svn repo is NOT in standard layout and has no trunk, branches, or tags
 at the root level of the repo. Instead the root level of the repo is
 equivalent to the trunk and there are no tags or branches.
 
-    $ svn2git http://svn.yoursite.com/path/to/repo --rootistrunk
+        $ svn2git http://svn.example.com/path/to/repo --rootistrunk
 
-6. The svn repo is in the standard layout but you want to exclude the massive
+5. The svn repo is in the standard layout but you want to exclude the massive
 doc directory and the backup files you once accidently added.
 
         $ svn2git http://svn.example.com/path/to/repo --exclude doc --exclude '.*~$'
@@ -114,8 +109,8 @@ want your new git repo to exist in, change into it and then run one of the
 above commands. Note that in the above cases the trunk, branches, tags options
 are simply folder names relative to the provided repo path. For example if you
 specified trunk=foo branches=bar and tags=foobar it would be referencing
-http://svn.yoursite.com/path/to/repo/foo as your trunk, and so on. However, in
-case 5 it references the root of the repo as trunk.
+http://svn.example.com/path/to/repo/foo as your trunk, and so on. However, in
+case 4 it references the root of the repo as trunk.
 
 Authors
 -------

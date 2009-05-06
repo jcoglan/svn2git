@@ -53,17 +53,31 @@ module Svn2Git
         opts.on('--branches BRANCHES_PATH', 'Subpath to branches from repository URL (default: branches)') do |branches|
           options[:branches] = branches
         end
-
         opts.on('--tags TAGS_PATH', 'Subpath to tags from repository URL (default: tags)') do |tags|
           options[:tags] = tags
         end
 
-        opts.on('--authors AUTHORS_FILE', "Path to file containing svn-to-git authors mapping (default: #{DEFAULT_AUTHORS_FILE})") do |authors|
-          options[:authors] = authors
-        end
-
         opts.on('--rootistrunk', 'Use this if the root level of the repo is equivalent to the trunk and there are no tags or branches') do
           options[:rootistrunk] = true
+          options[:trunk] = nil
+          options[:branches] = nil
+          options[:tags] = nil
+        end
+
+        opts.on('--notrunk', 'Do not import anything from trunk') do
+          options[:trunk] = nil
+        end
+
+        opts.on('--nobranches', 'Do not try to import any branches') do
+          options[:branches] = nil
+        end
+
+        opts.on('--notags', 'Do not try to import any tags') do
+          options[:tags] = nil
+        end
+
+        opts.on('--authors AUTHORS_FILE', "Path to file containing svn-to-git authors mapping (default: #{DEFAULT_AUTHORS_FILE})") do |authors|
+          options[:authors] = authors
         end
 
         opts.on('--exclude REGEX', 'Specify a Perl regular expression to filter paths when fetching; can be used multiple times') do |regex|
