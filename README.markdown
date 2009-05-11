@@ -140,3 +140,33 @@ underlying git-svn process.
 You can turn on verbose logging with the '-v' or '--verbose' flags, like so:
 
   $ svn2git http://svn.yoursite.com/path/to/repo --verbose
+
+FAQ
+---
+
+1. Why don't the tags show up in the master branch?
+
+    The tags won't show up in the master branch because the tags are actually
+    tied to the commits that were created in svn when the user made the tag.
+    Those commits are the first (head) commit of branch in svn that is
+    associated with that tag. If you want to see all the branches and tags
+    and their relationships in gitk you can run the following: gitk --all
+    
+    For further details please refer to FAQ #2.
+    
+2. Why don't you reference the parent of the tag commits instead?
+
+    In svn you are forced to create what are known in git as annotated tags.
+    It just so happens that svn annotated tags allow you to commit change
+    sets along with the tagging action. This means that the svn annotated tag
+    is a bit more complex then just an annotated tag it is a commit which is
+    treated as an annotated tag. Hence, for there to be a true 1-to-1 mapping
+    between git and svn we have to transfer over the svn commit which acts as
+    an annotated tag and then tag that commit in git using an annotated tag.
+    
+    If we were to reference the parent of this svn tagged commit there could
+    potentially be situations where a developer would checkout a tag in git
+    and the resulting code base would be different then if they checked out
+    that very same tag in the original svn repo. This is only due to the fact
+    that the svn tags allow changesets in them, making them not just annotated
+    tags.
