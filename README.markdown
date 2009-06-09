@@ -139,7 +139,7 @@ underlying git-svn process.
 
 You can turn on verbose logging with the '-v' or '--verbose' flags, like so:
 
-  $ svn2git http://svn.yoursite.com/path/to/repo --verbose
+    $ svn2git http://svn.yoursite.com/path/to/repo --verbose
 
 FAQ
 ---
