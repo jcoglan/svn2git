@@ -1,3 +1,12 @@
+# 1.3.0 - 2009-05-06
+
+  Many thanks to mss for the patches making up most of this release.
+
+  * Fixed a problem where tags didn't get the original date and time.
+  * New switch --exclude which can be used to specify a PCRE pattern to exclude paths from the import.
+  * New switches --no{trunk,branches,tags} to skip import of those.
+  * Improved docs.
+
 # 1.2.4 - 2009-05-04
 
   * No changes.  I ran the jeweler command twice inadvertently.  Tearing down the release would be more harmful than helpful.
