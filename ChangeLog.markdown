@@ -1,3 +1,9 @@
+# 1.3.1 - 2009-06-09
+
+  Thanks to iteman for finding a problem with the tagging process and providing a patch.
+  
+  * Fixed a problem with creating actual git tags when the SVN tags path was named anything other than 'tags.'
+
 # 1.3.0 - 2009-06-09
 
   Many thanks to mss for the patches making up most of this release.
