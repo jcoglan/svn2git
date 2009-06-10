@@ -1,4 +1,4 @@
-# 1.3.0 - 2009-05-06
+# 1.3.0 - 2009-06-09
 
   Many thanks to mss for the patches making up most of this release.
 
