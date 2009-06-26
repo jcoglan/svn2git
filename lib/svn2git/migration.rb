@@ -171,18 +171,9 @@ module Svn2Git
       svn_branches.each do |branch|
         branch = branch.strip
         next if branch == 'trunk'
-        
-        if branch =~ /origin\/(.*)/
-          log "Skipping branch '#{branch}' because it is a remote git branch, not a remote SVN branch."
-          next
-        end
-        
-        if @local.include? branch
-          run_command("git checkout #{branch}")
-          run_command("git svn rebase")
-        else
-          run_command("git checkout -b #{branch}")
-        end
+
+        run_command("git checkout #{branch}")
+        run_command("git checkout -b #{branch}")    
       end
     end
 
