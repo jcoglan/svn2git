@@ -157,11 +157,12 @@ module Svn2Git
 
     def fix_tags
       @tags.each do |tag|
-        id = tag.strip.gsub(%r{^tags\/}, '')
-        subject = `git log -1 --pretty=format:"%s" #{tag.strip()}`
-        date = `git log -1 --pretty=format:"%ci" #{tag.strip()}`
-        run_command("GIT_COMMITTER_DATE='#{date}' git tag -a -m '#{subject}' '#{id.strip()}' '#{tag.strip()}'")
-        run_command("git branch -d -r #{tag.strip()}")
+        tag = tag.strip
+        id = tag.strip.gsub(%r{^tags\/}, '').strip
+        subject = run_command("git log -1 --pretty=format:'%s' #{tag}")
+        date = run_command("git log -1 --pretty=format:'%ci' #{tag}")
+        run_command("GIT_COMMITTER_DATE='#{date}' git tag -a -m '#{subject}' '#{id}' '#{tag}'")
+        run_command("git branch -d -r #{tag}")
       end
     end
 
