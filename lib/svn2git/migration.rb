@@ -129,7 +129,7 @@ module Svn2Git
         run_command(cmd)
       end
 
-      run_command("git config svn.authorsfile #{authors}") if authors
+      run_command("git config svn.authorsfile #{authors}") unless authors.nil?
 
       cmd = "git svn fetch"
       unless exclude.empty?
@@ -150,7 +150,8 @@ module Svn2Git
     end
 
     def get_branches
-      @remote = `git branch -r`.split(/\n/)
+      @local = run_command("git branch -l").split(/\n/).collect{ |b| b.strip }
+      @remote = run_command("git branch -r").split(/\n/).collect{ |b| b.strip }
       @tags = @remote.find_all { |b| b.strip =~ %r{^tags\/} }
     end
 
@@ -169,8 +170,18 @@ module Svn2Git
       svn_branches.each do |branch|
         branch = branch.strip
         next if branch == 'trunk'
-        run_command("git checkout #{branch}")
-        run_command("git checkout -b #{branch}")
+        
+        if branch =~ /origin\/(.*)/
+          log "Skipping branch '#{branch}' because it is a remote git branch, not a remote SVN branch."
+          next
+        end
+        
+        if @local.include? branch
+          run_command("git checkout #{branch}")
+          run_command("git svn rebase")
+        else
+          run_command("git checkout -b #{branch}")
+        end
       end
     end
 
@@ -191,11 +202,16 @@ module Svn2Git
     def run_command(cmd)
       log "Running command: #{cmd}"
 
+      ret = ''
+
       IO.popen(cmd) do |stdout|
         stdout.each do |line|
           log line
+          ret << line
         end
       end
+      
+      ret
     end
 
     def log(msg)
