@@ -67,7 +67,7 @@ Installation
 Make sure you have git installed, then install the gem:
 
     $ sudo apt-get install git-core git-svn
-    $ sudo gem install nirvdrum-svn2git
+    $ sudo gem install svn2git --source http://gemcutter.org [formerly: $ sudo gem install nirvdrum-svn2git --source http://gems.github.com]
 
 Usage
 -----
