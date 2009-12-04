@@ -132,6 +132,17 @@ svn2git will load it out of there. This allows you to build up one authors
 file for all your projects and have it loaded for each repository that you
 migrate.
 
+If you need a jump start on figuring out what users made changes in your
+svn repositories the following command sequence might help. It grabs all
+the logs from the svn repository, pulls out all the names from the commits,
+sorts them, and then reduces the list to only unique names. So, in the end
+it outputs a list of usernames of the people that made commits to the svn
+repository which name on its own line. This would allow you to easily
+redirect the output of this command sequence to ~/.svn2git/authors and have
+a very good starting point for your mapping.
+
+    $ svn log | grep -E "r[0-9]+ \| [a-z]+ \|" | awk '{print $3}' | sort | uniq
+
 Debugging
 ---------
 
