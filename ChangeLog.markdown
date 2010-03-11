@@ -1,3 +1,7 @@
+# 1.3.2 - 2010-03-11
+
+  * Deal cleanly with any single quotes found in tag comments so that the 'git tag' commands run correctly
+
 # 1.3.1 - 2009-06-09
 
   Thanks to iteman for finding a problem with the tagging process and providing a patch.

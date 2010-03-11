@@ -158,10 +158,13 @@ module Svn2Git
     def fix_tags
       @tags.each do |tag|
         tag = tag.strip
-        id = tag.strip.gsub(%r{^tags\/}, '').strip
+        id = tag.gsub(%r{^tags\/}, '').strip
         subject = run_command("git log -1 --pretty=format:'%s' #{tag}")
         date = run_command("git log -1 --pretty=format:'%ci' #{tag}")
-        run_command("GIT_COMMITTER_DATE='#{date}' git tag -a -m '#{subject}' '#{id}' '#{tag}'")
+        subject = escape_quotes(subject)
+        date = escape_quotes(date)
+        id = escape_quotes(id)
+        run_command("GIT_COMMITTER_DATE='#{date}' git tag -a -m '#{subject}' '#{id}' '#{escape_quotes(tag)}'")
         run_command("git branch -d -r #{tag}")
       end
     end
@@ -214,6 +217,10 @@ module Svn2Git
       puts "Error starting script: #{msg}\n\n"
       puts @opts.help
       exit
+    end
+
+    def escape_quotes(str)
+      str.gsub("'", "'\\\\''")
     end
 
   end
