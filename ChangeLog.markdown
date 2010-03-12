@@ -1,4 +1,7 @@
-# 1.3.2 - 2010-03-11
+# 1.3.2 - 2010-03-12
+
+  Thanks to rajit for finding a problem with quoting in tag comments that were causing issues with svn2git's internal
+  quoting and providing a patch.
 
   * Deal cleanly with any single quotes found in tag comments so that the 'git tag' commands run correctly
 
