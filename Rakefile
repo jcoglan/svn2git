@@ -10,6 +10,7 @@ begin
     spec.homepage = "https://www.negativetwenty.net/redmine/projects/svn2git"
     spec.email = "nirvdrum@gmail.com"
   end
+  Jeweler::GemcutterTasks.new
   
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
