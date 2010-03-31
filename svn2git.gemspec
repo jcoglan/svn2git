@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{svn2git}
-  s.version = "1.3.2"
+  s.version = "1.3.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Coglan", "Kevin Menard"]
-  s.date = %q{2010-03-12}
+  s.date = %q{2010-03-31}
   s.default_executable = %q{svn2git}
   s.email = %q{nirvdrum@gmail.com}
   s.executables = ["svn2git"]
