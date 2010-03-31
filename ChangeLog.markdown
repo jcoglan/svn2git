@@ -1,19 +1,25 @@
+# 1.3.3 - 2010-03-31
+
+  Thanks to Jeff Ramnani (jramnani) for finding a problem with with the --excludes tag and providing a patch.
+
+  * Fix error when using '--exclude' option.
+
 # 1.3.2 - 2010-03-12
 
-  Thanks to rajit for finding a problem with quoting in tag comments that were causing issues with svn2git's internal
+  Thanks to Rajit Singh (rajit) for finding a problem with quoting in tag comments that were causing issues with svn2git's internal
   quoting and providing a patch.
 
-  * Deal cleanly with any single quotes found in tag comments so that the 'git tag' commands run correctly
+  * Deal cleanly with any single quotes found in tag comments so that the 'git tag' commands run correctly.
 
 # 1.3.1 - 2009-06-09
 
-  Thanks to iteman for finding a problem with the tagging process and providing a patch.
+  Thanks to KUBO Atsuhiro (iteman) for finding a problem with the tagging process and providing a patch.
   
   * Fixed a problem with creating actual git tags when the SVN tags path was named anything other than 'tags.'
 
 # 1.3.0 - 2009-06-09
 
-  Many thanks to mss for the patches making up most of this release.
+  Many thanks to Malte S. Stretz (mss) for the patches making up most of this release.
 
   * Fixed a problem where tags didn't get the original date and time.
   * New switch --exclude which can be used to specify a PCRE pattern to exclude paths from the import.
