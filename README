@@ -1,89 +1,10 @@
 == svn2git
 
-+svn2git+ is a tiny utility for migrating projects from Subversion to Git while keeping
-the trunk, branches and tags where they should be. It uses git-svn to clone an svn repository
-and does some clean-up to make sure branches and tags are imported in a meaningful way, and
-that the code checked into master ends up being what's currently in your svn trunk rather
-than whichever svn branch your last commit was in.
+This project is now dead. It was a quick hack to get my code out
+of Subversion. There is however an active fork over here:
 
-=== Examples
+    http://github.com/nirvdrum/svn2git
 
-Say I have this code in svn:
-
-  trunk
-    ...
-  branches
-    1.x
-    2.x
-  tags
-    1.0.0
-    1.0.1
-    1.0.2
-    1.1.0
-    2.0.0
-
-git-svn will go through the commit history to build a new git repo. It will import all branches
-and tags as remote svn branches, whereas what you really want is git-native local branches and
-git tag objects. So after importing this project I'll get:
-
-  $ git branch
-  * master
-  $ git branch -a
-  * master
-    1.x
-    2.x
-    tags/1.0.0
-    tags/1.0.1
-    tags/1.0.2
-    tags/1.1.0
-    tags/2.0.0
-    trunk
-  $ git tag -l
-  [ empty ]
-
-After svn2git is done with your project, you'll get this instead:
-
-  $ git branch
-  * master
-    1.x
-    2.x
-  $ git tag -l
-    1.0.0
-    1.0.1
-    1.0.2
-    1.1.0
-    2.0.0
-
-Finally, it makes sure the HEAD of master is the same as the current trunk of the svn repo.
-
-=== Installation
-
-Make sure you have git installed, then install the gem:
-
-  $ sudo apt-get install git-core git-svn
-  $ sudo gem install svn2git
-
-=== Usage
-
-To create a git repo from an existing svn repo:
-
-  $ svn2git http://svn.yoursite.com/path/to/repo
-
-This will create a git repository in the current directory with the git version of the svn
-repository. If you're not using the standard trunk/branches/tags layout, you can pass arguments
-to tell git-svn what to look for:
-
-  $ svn2git http://svn.yoursite.com/path/to/repo trunk=the_trunk tags=taggings
-
-=== Authors
-
-To convert all your svn authors to git format, create a file somewhere on your system with
-the list of conversions to make, one per line, for example:
-
-  jcoglan = James Coglan <jcoglan@never-you-mind.com>
-  stnick = Santa Claus <nicholas@lapland.com>
-
-Then pass an +authors+ option to +svn2git+ pointing to your file:
-
-  svn2git http://repos.com/myproject authors=~/authors.txt
+Bugs, patches, messages and gratitude should be directed to
+Kevin Menard -- thanks for taking this hack and running with it.
 
