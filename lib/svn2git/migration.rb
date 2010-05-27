@@ -10,14 +10,21 @@ module Svn2Git
 
     def initialize(args)
       @options = parse(args)
-      show_help_message("Missing SVN_URL parameter") if args.empty?
-      show_help_message('Too many arguments') if args.size > 1
-
-      @url = args.first
+      if @options.fetch(:rebase, false)
+         show_help_message('Too many arguments') if args.size > 0
+      else
+         show_help_message("Missing SVN_URL parameter") if args.empty?
+         show_help_message('Too many arguments') if args.size > 1
+         @url = args.first
+      end
     end
 
     def run!
-      clone!
+      if @options.fetch(:rebase, false)
+        get_branches
+      else
+        clone!
+      end
       fix_tags
       fix_branches
       fix_trunk
@@ -45,6 +52,10 @@ module Svn2Git
 
         opts.separator ''
         opts.separator 'Specific options:'
+
+        opts.on('--rebase', 'Instead of cloning a new project, rebase an existing one against svn') do
+          options[:rebase] = true
+        end
 
         opts.on('--trunk TRUNK_PATH', 'Subpath to trunk from repository URL (default: trunk)') do |trunk|
           options[:trunk] = trunk
@@ -177,20 +188,28 @@ module Svn2Git
       svn_branches = @remote.find_all { |b| not @tags.include?(b) }
       svn_branches.each do |branch|
         branch = branch.strip
-        next if branch == 'trunk'
 
+        if @options.fetch(:rebase, false) and (@local.index(branch) != nil or branch == 'trunk')
+           branch = 'master' if branch == 'trunk'
+           run_command("git checkout -f #{branch}")
+           run_command("git svn rebase")
+           next
+        end
+
+        next if branch == 'trunk'
+        run_command("git branch -t #{branch} remotes/#{branch}")
         run_command("git checkout #{branch}")
-        run_command("git checkout -b #{branch}")    
       end
     end
 
     def fix_trunk
       trunk = @remote.find { |b| b.strip == 'trunk' }
-      if trunk
+      if trunk and not @options.fetch(:rebase, false)
         run_command("git checkout trunk")
         run_command("git branch -D master")
         run_command("git checkout -f -b master")
-        run_command("git branch -d -r trunk")
+      else
+        run_command("git checkout -f master")
       end
     end
 
