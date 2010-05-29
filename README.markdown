@@ -74,7 +74,9 @@ Make sure you have git, ruby and rubygems installed, then install the gem:
 Usage
 -----
 
-There are a number of ways in which you can create a git repo from an existing
+### Initial Conversion ###
+
+There are several ways you can create a git repo from an existing
 svn repo. The differentiating factor is the svn repo layout. Below is an
 enumerated listing of the varying supported layouts and the proper way to
 create a git repo from a svn repo in the specified layout.
@@ -113,6 +115,16 @@ are simply folder names relative to the provided repo path. For example if you
 specified trunk=foo branches=bar and tags=foobar it would be referencing
 http://svn.example.com/path/to/repo/foo as your trunk, and so on. However, in
 case 4 it references the root of the repo as trunk.
+
+### Repository Updates ###
+
+As of svn2git 2.0 there is a new feature to pull in the latest changes from SVN into your
+git repository created with svn2git.  This is a one way sync, but allows you to use svn2git
+as a mirroring tool for your SVN repositories.
+
+The command to call is:
+
+        $ cd <EXISTING_REPO> && svn2git --rebase
 
 Authors
 -------
