@@ -1,3 +1,16 @@
+# 2.0.0 - 2010-05-29
+
+  This release adds the oft requested incremental SVN update support.  If you run svn2git with the `--rebase` option on an existing
+  repository that you've converted with svn2git, it will fetch new branches & tags from SVN and update existing ones.  There are
+  two important things to note:
+
+  * This will not work on already converted repositories because the tracking information isn't set up correctly.  You could do that
+  yourself, but it's probably a lot easier to do the conversion over.
+  * svn2git now maintains remote tracking information.  If this is a problem for you because you don't want any links to the SVN server
+  you can either stick with a 1.x release of svn2git or simply clone the repo created with svn2git, which will lose the tracking information.
+
+  A great deal of thanks to Nathaniel McCallum (npmccallum) for coming up with an elegant solution and then providing the patch for this release.
+
 # 1.3.3 - 2010-03-31
 
   Thanks to Jeff Ramnani (jramnani) for finding a problem with with the --excludes tag and providing a patch.
