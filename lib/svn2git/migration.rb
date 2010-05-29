@@ -10,17 +10,17 @@ module Svn2Git
 
     def initialize(args)
       @options = parse(args)
-      if @options.fetch(:rebase, false)
+      if @options[:rebase]
          show_help_message('Too many arguments') if args.size > 0
       else
-         show_help_message("Missing SVN_URL parameter") if args.empty?
+         show_help_message('Missing SVN_URL parameter') if args.empty?
          show_help_message('Too many arguments') if args.size > 1
          @url = args.first
       end
     end
 
     def run!
-      if @options.fetch(:rebase, false)
+      if @options[:rebase]
         get_branches
       else
         clone!
@@ -53,7 +53,7 @@ module Svn2Git
         opts.separator ''
         opts.separator 'Specific options:'
 
-        opts.on('--rebase', 'Instead of cloning a new project, rebase an existing one against svn') do
+        opts.on('--rebase', 'Instead of cloning a new project, rebase an existing one against SVN') do
           options[:rebase] = true
         end
 
@@ -189,7 +189,7 @@ module Svn2Git
       svn_branches.each do |branch|
         branch = branch.strip
 
-        if @options.fetch(:rebase, false) and (@local.index(branch) != nil or branch == 'trunk')
+        if @options[:rebase] && (@local.include?(branch) || branch == 'trunk')
            branch = 'master' if branch == 'trunk'
            run_command("git checkout -f #{branch}")
            run_command("git svn rebase")
@@ -204,7 +204,7 @@ module Svn2Git
 
     def fix_trunk
       trunk = @remote.find { |b| b.strip == 'trunk' }
-      if trunk and not @options.fetch(:rebase, false)
+      if trunk && ! @options[:rebase]
         run_command("git checkout trunk")
         run_command("git branch -D master")
         run_command("git checkout -f -b master")
