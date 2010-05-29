@@ -12,6 +12,7 @@ module Svn2Git
       @options = parse(args)
       if @options[:rebase]
          show_help_message('Too many arguments') if args.size > 0
+         verify_working_tree_is_clean
       else
          show_help_message('Missing SVN_URL parameter') if args.empty?
          show_help_message('Too many arguments') if args.size > 1
@@ -240,6 +241,14 @@ module Svn2Git
       puts "Error starting script: #{msg}\n\n"
       puts @opts.help
       exit
+    end
+    
+    def verify_working_tree_is_clean
+      status = run_command('git status --porcelain --untracked-files=no')
+      unless status.strip == ''
+        puts 'You have local pending changes.  The working tree must be clean in order to continue.'
+        exit
+      end
     end
 
     def escape_quotes(str)
