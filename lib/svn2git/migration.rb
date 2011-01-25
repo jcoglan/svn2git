@@ -242,12 +242,12 @@ module Svn2Git
       puts @opts.help
       exit
     end
-    
+
     def verify_working_tree_is_clean
       status = run_command('git status --porcelain --untracked-files=no')
       unless status.strip == ''
         puts 'You have local pending changes.  The working tree must be clean in order to continue.'
-        exit
+        exit -1
       end
     end
 
