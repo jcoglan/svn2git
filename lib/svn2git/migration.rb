@@ -37,6 +37,7 @@ module Svn2Git
       options = {}
       options[:verbose] = false
       options[:metadata] = false
+      options[:nominimizeurl] = false
       options[:rootistrunk] = false
       options[:trunk] = 'trunk'
       options[:branches] = 'branches'
@@ -89,6 +90,10 @@ module Svn2Git
           options[:tags] = nil
         end
 
+        opts.on('--no-minimize-url', 'Accept URLs as-is without attempting to connect to a higher level directory') do
+          options[:nominimizeurl] = true
+        end
+
         opts.on('-m', '--metadata', 'Include metadata in git logs (git-svn-id)') do
           options[:metadata] = true
         end
@@ -126,6 +131,7 @@ module Svn2Git
       branches = @options[:branches]
       tags = @options[:tags]
       metadata = @options[:metadata]
+      nominimizeurl = @options[:nominimizeurl]
       rootistrunk = @options[:rootistrunk]
       authors = @options[:authors]
       exclude = @options[:exclude]
@@ -134,6 +140,9 @@ module Svn2Git
         # Non-standard repository layout.  The repository root is effectively 'trunk.'
         cmd = "git svn init "
         cmd += "--no-metadata " unless metadata
+        if nominimizeurl
+          cmd += "--no-minimize-url "
+        end
         cmd += "--trunk=#{@url}"
         run_command(cmd)
 
@@ -142,6 +151,9 @@ module Svn2Git
 
         # Add each component to the command that was passed as an argument.
         cmd += "--no-metadata " unless metadata
+        if nominimizeurl
+          cmd += "--no-minimize-url "
+        end
         cmd += "--trunk=#{trunk} " unless trunk.nil?
         cmd += "--tags=#{tags} " unless tags.nil?
         cmd += "--branches=#{branches} " unless branches.nil?
