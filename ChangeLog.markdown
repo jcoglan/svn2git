@@ -1,6 +1,7 @@
-# 2.1.0
+# 2.1.0 - 2011-04-03
 
-  This release handles some corner cases with cloning git repositories, making svn2git applicable to wider environments.
+  Thanks to Francois Rey (fmjrey), Sven Axelsson (svenax), and Julian Taylor (juliantaylor) for submitting all the patches
+  that comprise this release.  svn2git now works with a much wider array SVN repositories because of their efforts.
   
   * Added --no-minimize-url option for migrating specific subprojects from an SVN repo containing several projects (thanks fmjrey).
   * Added --username option for migrating password-protected repositories (thanks svenax).
