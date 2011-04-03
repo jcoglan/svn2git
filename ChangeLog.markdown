@@ -5,6 +5,7 @@
   * Added --no-minimize-url option for migrating specific subprojects from an SVN repo containing several projects (thanks fmjrey).
   * Added --username option for migrating password-protected repositories (thanks svenax).
   * Added --revision option for specifying the revision to start importing from (thanks svenax).
+  * Fixed compatibility with older versions of git (thanks juliantaylor).
 
 # 2.0.0 - 2010-05-29
 
