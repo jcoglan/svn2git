@@ -4,14 +4,13 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{svn2git}
-  s.version = "2.1.0"
+  s.name = "svn2git"
+  s.version = "2.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Coglan", "Kevin Menard"]
-  s.date = %q{2011-04-03}
-  s.default_executable = %q{svn2git}
-  s.email = %q{nirvdrum@gmail.com}
+  s.date = "2011-12-27"
+  s.email = "nirvdrum@gmail.com"
   s.executables = ["svn2git"]
   s.extra_rdoc_files = [
     "ChangeLog.markdown",
@@ -29,10 +28,10 @@ Gem::Specification.new do |s|
     "lib/svn2git/migration.rb",
     "svn2git.gemspec"
   ]
-  s.homepage = %q{https://www.negativetwenty.net/redmine/projects/svn2git}
+  s.homepage = "https://www.negativetwenty.net/redmine/projects/svn2git"
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.5.3}
-  s.summary = %q{A tool for migrating svn projects to git}
+  s.rubygems_version = "1.8.13"
+  s.summary = "A tool for migrating svn projects to git"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
