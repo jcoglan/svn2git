@@ -65,7 +65,7 @@ Installation
 ------------
 
 Make sure you have git, git-svn, and ruby installed.  svn2git is a ruby wrapper around git's native SVN support through git-svn.  It is possible to have git
-installed without git-svn installed, so please do verify that you can run "$ git svn" successfully.  For a Debian-based system, the installation of the
+installed without git-svn installed, so please do verify that you can run `$ git svn` successfully.  For a Debian-based system, the installation of the
 prerequisites would like like:
 
     $ sudo apt-get install git-core git-svn ruby rubygems
