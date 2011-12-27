@@ -1,3 +1,7 @@
+# 2.1.1 - Unreleased
+
+  * Fixed SVN branch detection (thanks thinkerbot)
+
 # 2.1.0 - 2011-04-03
 
   Thanks to Francois Rey (fmjrey), Sven Axelsson (svenax), and Julian Taylor (juliantaylor) for submitting all the patches
