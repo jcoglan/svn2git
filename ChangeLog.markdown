@@ -1,6 +1,7 @@
-# 2.1.1 - Unreleased
+# 2.1.1 - 2011-12-27
 
   * Fixed SVN branch detection (thanks thinkerbot)
+  * Stop processing when a git subprocess fails (thanks thinkerbot)
 
 # 2.1.0 - 2011-04-03
 
