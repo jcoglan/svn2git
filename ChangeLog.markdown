@@ -2,6 +2,7 @@
 
   * Fixed SVN branch detection (thanks thinkerbot)
   * Stop processing when a git subprocess fails (thanks thinkerbot)
+  * Fixed an issue with SVN branches containing shell special characters (thanks sleicht)
 
 # 2.1.0 - 2011-04-03
 

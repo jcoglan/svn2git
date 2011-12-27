@@ -236,14 +236,14 @@ module Svn2Git
         if @options[:rebase] && (@local.include?(branch) || branch == 'trunk')
            lbranch = branch
            lbranch = 'master' if branch == 'trunk'
-           run_command("git checkout -f #{lbranch}")
-           run_command("git rebase remotes/svn/#{branch}")
+           run_command("git checkout -f \"#{lbranch}\"")
+           run_command("git rebase \"remotes/svn/#{branch}\"")
            next
         end
 
         next if branch == 'trunk' || @local.include?(branch)
-        run_command("git branch --track #{branch} remotes/svn/#{branch}")
-        run_command("git checkout #{branch}")
+        run_command("git branch --track \"#{branch}\" \"remotes/svn/#{branch}\"")
+        run_command("git checkout \"#{branch}"\")
       end
     end
 
