@@ -277,7 +277,7 @@ module Svn2Git
 
       unless $?.exitstatus == 0
         $stderr.puts "command failed:\n#{cmd}"
-        exit 1
+        exit -1
       end
 
       ret
