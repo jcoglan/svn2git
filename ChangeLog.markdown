@@ -1,3 +1,7 @@
+# 2.1.2 - 2011-12-28
+
+  * Fixed a regression in improperly quoting branch names (thanks ziangsong)
+
 # 2.1.1 - 2011-12-27
 
   * Fixed SVN branch detection (thanks thinkerbot)

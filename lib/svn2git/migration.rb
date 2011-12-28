@@ -243,7 +243,7 @@ module Svn2Git
 
         next if branch == 'trunk' || @local.include?(branch)
         run_command("git branch --track \"#{branch}\" \"remotes/svn/#{branch}\"")
-        run_command("git checkout \"#{branch}"\")
+        run_command("git checkout \"#{branch}\"")
       end
     end
 
