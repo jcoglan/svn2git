@@ -1,3 +1,12 @@
+# 2.2.0 - 2012-01-25
+
+  Thanks to Craig Hobbs (craigahobbs) and Simon Chiang (thinkerbot) for the patches making up this release.
+  It rounds out our tag support by handling tags with special characters and preserving original tag author info.
+
+  * Fixed an issue with not quoting tag names (thanks craigahobbs and thinkerbot)
+  * Fixed an issue whereby the person running the svn2git conversion became the author of every tag (i.e., we lost the
+  original tag committer info) (thanks thinkerbot)
+
 # 2.1.2 - 2011-12-28
 
   * Fixed a regression in improperly quoting branch names (thanks ziangsong)
