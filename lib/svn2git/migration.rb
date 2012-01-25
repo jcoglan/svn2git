@@ -210,16 +210,32 @@ module Svn2Git
     end
 
     def fix_tags
+      current = {}
+      current['user.name']  = run_command("git config --local --get user.name")
+      current['user.email'] = run_command("git config --local --get user.email")
+
       @tags.each do |tag|
         tag = tag.strip
-        id = tag.gsub(%r{^svn\/tags\/}, '').strip
-        subject = run_command("git log -1 --pretty=format:'%s' '#{tag}'")
-        date = run_command("git log -1 --pretty=format:'%ci' '#{tag}'")
-        subject = escape_quotes(subject)
-        date = escape_quotes(date)
-        id = escape_quotes(id)
-        run_command("GIT_COMMITTER_DATE='#{date}' git tag -a -m '#{subject}' '#{id}' '#{escape_quotes(tag)}'")
-        run_command("git branch -d -r '#{tag}'")
+        id      = tag.gsub(%r{^svn\/tags\/}, '').strip
+        subject = run_command("git log -1 --pretty=format:'%s' '#{escape_quotes(tag)}'")
+        date    = run_command("git log -1 --pretty=format:'%ci' '#{escape_quotes(tag)}'")
+        author  = run_command("git log -1 --pretty=format:'%an' '#{escape_quotes(tag)}'")
+        email   = run_command("git log -1 --pretty=format:'%ae' '#{escape_quotes(tag)}'")
+        run_command("git config --local user.name '#{escape_quotes(author)}'")
+        run_command("git config --local user.email '#{escape_quotes(email)}'")
+        run_command("GIT_COMMITTER_DATE='#{escape_quotes(date)}' git tag -a -m '#{escape_quotes(subject)}' '#{escape_quotes(id)}' '#{escape_quotes(tag)}'")
+        run_command("git branch -d -r '#{escape_quotes(tag)}'")
+      end
+
+    ensure
+      current.each_pair do |name, value|
+        # If a line was read, then there was a config value so restore it.
+        # Otherwise unset the value because originally there was none.
+        if value[-1] == "\n"
+          run_command("git config --local #{name} '#{value.chomp("\n")}'")
+        else
+          run_command("git config --local --unset #{name}")
+        end
       end
     end
 
