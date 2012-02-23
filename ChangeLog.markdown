@@ -1,3 +1,7 @@
+# 2.2.1
+
+  * Added the ability to specify an end revision for migration (thanks dzuelke).
+
 # 2.2.0 - 2012-01-25
 
   Thanks to Craig Hobbs (craigahobbs) and Simon Chiang (thinkerbot) for the patches making up this release.
@@ -9,13 +13,13 @@
 
 # 2.1.2 - 2011-12-28
 
-  * Fixed a regression in improperly quoting branch names (thanks ziangsong)
+  * Fixed a regression in improperly quoting branch names (thanks ziangsong).
 
 # 2.1.1 - 2011-12-27
 
-  * Fixed SVN branch detection (thanks thinkerbot)
-  * Stop processing when a git subprocess fails (thanks thinkerbot)
-  * Fixed an issue with SVN branches containing shell special characters (thanks sleicht)
+  * Fixed SVN branch detection (thanks thinkerbot).
+  * Stop processing when a git subprocess fails (thanks thinkerbot).
+  * Fixed an issue with SVN branches containing shell special characters (thanks sleicht).
 
 # 2.1.0 - 2011-04-03
 

@@ -101,7 +101,7 @@ module Svn2Git
           options[:nominimizeurl] = true
         end
 
-        opts.on('--revision SREV[:EREV]', 'Start importing from SVN revision SREV; optionally end at EREV') do |revision|
+        opts.on('--revision START_REV[:END_REV]', 'Start importing from SVN revision START_REV; optionally end at END_REV') do |revision|
           options[:revision] = revision
         end
 

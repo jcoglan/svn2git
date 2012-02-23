@@ -124,6 +124,10 @@ one of them.
 
         $ svn2git http://svn.example.com/path/to/repo --revision <<starting_revision_number>>
 
+9. You need to migrate starting at a specific svn revision number, ending at a specific revision number.
+
+        $ svn2git http://svn.example.com/path/to/repo --revision <<starting_revision_number>>:<<ending_revision_number>>
+
 The above will create a git repository in the current directory with the git
 version of the svn repository. Hence, you need to make a directory that you
 want your new git repo to exist in, change into it and then run one of the
