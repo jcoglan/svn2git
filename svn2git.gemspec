@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "svn2git"
-  s.version = "2.2.0"
+  s.version = "2.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Coglan", "Kevin Menard"]
-  s.date = "2012-01-25"
+  s.date = "2012-02-25"
   s.email = "nirvdrum@gmail.com"
   s.executables = ["svn2git"]
   s.extra_rdoc_files = [
