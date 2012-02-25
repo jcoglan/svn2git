@@ -215,8 +215,8 @@ module Svn2Git
 
     def fix_tags
       current = {}
-      current['user.name']  = run_command("git config --local --get user.name")
-      current['user.email'] = run_command("git config --local --get user.email")
+      current['user.name']  = run_command("git config --local --get user.name", false)
+      current['user.email'] = run_command("git config --local --get user.email", false)
 
       @tags.each do |tag|
         tag = tag.strip
@@ -232,13 +232,16 @@ module Svn2Git
       end
 
     ensure
-      current.each_pair do |name, value|
-        # If a line was read, then there was a config value so restore it.
-        # Otherwise unset the value because originally there was none.
-        if value[-1] == "\n"
-          run_command("git config --local #{name} '#{value.chomp("\n")}'")
-        else
-          run_command("git config --local --unset #{name}")
+      # We only change the git config values if there are @tags available.  So it stands to reason we should revert them only in that case.
+      unless @tags.empty?
+        current.each_pair do |name, value|
+          # If a line was read, then there was a config value so restore it.
+          # Otherwise unset the value because originally there was none.
+          if value.strip != ''
+            run_command("git config --local #{name} '#{value.strip}'")
+          else
+            run_command("git config --local --unset #{name}")
+          end
         end
       end
     end
@@ -282,7 +285,7 @@ module Svn2Git
       run_command("git gc")
     end
 
-    def run_command(cmd)
+    def run_command(cmd, exit_on_error=true)
       log "Running command: #{cmd}"
 
       ret = ''
@@ -295,7 +298,7 @@ module Svn2Git
         end
       end
 
-      unless $?.exitstatus == 0
+      if exit_on_error && ($?.exitstatus != 0)
         $stderr.puts "command failed:\n#{cmd}"
         exit -1
       end

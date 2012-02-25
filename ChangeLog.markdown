@@ -1,6 +1,9 @@
 # 2.2.1
 
+  This is a critical bugfix release if your repository has tags.  Thanks to David Zülke (dzuelke) for the patches making up this release.
+
   * Added the ability to specify an end revision for migration (thanks dzuelke).
+  * Fixed an issue with initial conversion if the repo had tags (thanks dzuelke).
 
 # 2.2.0 - 2012-01-25
 
