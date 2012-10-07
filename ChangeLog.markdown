@@ -1,3 +1,16 @@
+# 2.2.2
+
+  This is an overdue bugfix release.  No new features were added, but several long-standing bugs fixed by the community
+  have been merged.  Many thanks to Edson de Lima (edsonlima), Rudger (Rud5G), Ben Wolfe (bwolfe), CyberTech, PowerKiKi, and Philipp Riemer (ruderphilipp) for the pull requests.
+
+  * Fixed an issue working with repositories that contained a space in the name (thanks edsonlima).
+  * Fixed an issue working with tags that contain a hyphen (thanks Rud5G).
+  * Fixed an issue with fixing tags during a rebase (thanks PowerKiKi).
+  * Double-quote git-svn commands working with tags to avoid issues with special strings (thanks CyberTech).
+  * Improved the documentation example of fetching the author list for an SVN repository (thanks bwolfe).
+  * Set the git committer date for tags in a more cross-platform manner (thanks CyberTech).
+  * Improved documentation formatting (thanks ruderphilipp).
+
 # 2.2.1 - 2012-02-25
 
   This is a critical bugfix release if your repository has tags.  Thanks to David Zülke (dzuelke) for the patches making up this release.
