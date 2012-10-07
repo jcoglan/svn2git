@@ -1,4 +1,4 @@
-# 2.2.2
+# 2.2.2 - 2012-10-07
 
   This is an overdue bugfix release.  No new features were added, but several long-standing bugs fixed by the community
   have been merged.  Many thanks to Edson de Lima (edsonlima), Rudger (Rud5G), Ben Wolfe (bwolfe), CyberTech, PowerKiKi, and Philipp Riemer (ruderphilipp) for the pull requests.
