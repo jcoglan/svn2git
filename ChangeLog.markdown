@@ -1,4 +1,4 @@
-# 2.2.1
+# 2.2.1 - 2012-02-25
 
   This is a critical bugfix release if your repository has tags.  Thanks to David Zülke (dzuelke) for the patches making up this release.
 
