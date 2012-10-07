@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["James Coglan", "Kevin Menard"]
-  s.date = "2012-02-25"
+  s.date = "2012-10-07"
   s.email = "nirvdrum@gmail.com"
   s.executables = ["svn2git"]
   s.extra_rdoc_files = [
@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "https://www.negativetwenty.net/redmine/projects/svn2git"
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.15"
+  s.rubygems_version = "1.8.23"
   s.summary = "A tool for migrating svn projects to git"
 
   if s.respond_to? :specification_version then
