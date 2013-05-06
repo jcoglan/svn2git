@@ -1,3 +1,10 @@
+# 2.2.3
+
+  This is a bugfix release. First change done by FeeJai
+  * Fixed an issue with password protected svn-repositories. The prompt to enter the password is now displayed.
+  * Fixed an issue with server certificates. If the certificate is untrusted, the prompt to confirm or deny the certificate is now shown
+
+
 # 2.2.2 - 2012-10-07
 
   This is an overdue bugfix release.  No new features were added, but several long-standing bugs fixed by the community
