@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+require 'rubygems'
 require 'svn2git'
 
 migration = Svn2Git::Migration.new(ARGV)
