@@ -188,7 +188,7 @@ module Svn2Git
         run_command(cmd, true, true)
       end
 
-      run_command("git config svn.authorsfile #{authors}") unless authors.nil?
+      run_command("#{git_config_command} svn.authorsfile #{authors}") unless authors.nil?
 
       cmd = "git svn fetch "
       unless revision.nil?
@@ -253,8 +253,8 @@ module Svn2Git
 
     def fix_tags
       current = {}
-      current['user.name']  = run_command("git config --local --get user.name", false)
-      current['user.email'] = run_command("git config --local --get user.email", false)
+      current['user.name']  = run_command("#{git_config_command} --get user.name", false)
+      current['user.email'] = run_command("#{git_config_command} --get user.email", false)
 
       @tags.each do |tag|
         tag = tag.strip
@@ -263,8 +263,8 @@ module Svn2Git
         date    = run_command("git log -1 --pretty=format:'%ci' \"#{escape_quotes(tag)}\"").chomp("'").reverse.chomp("'").reverse
         author  = run_command("git log -1 --pretty=format:'%an' \"#{escape_quotes(tag)}\"").chomp("'").reverse.chomp("'").reverse
         email   = run_command("git log -1 --pretty=format:'%ae' \"#{escape_quotes(tag)}\"").chomp("'").reverse.chomp("'").reverse
-        run_command("git config --local user.name \"#{escape_quotes(author)}\"")
-        run_command("git config --local user.email \"#{escape_quotes(email)}\"")
+        run_command("#{git_config_command} user.name \"#{escape_quotes(author)}\"")
+        run_command("#{git_config_command} user.email \"#{escape_quotes(email)}\"")
 
         original_git_committer_date = ENV['GIT_COMMITTER_DATE']
         ENV['GIT_COMMITTER_DATE'] = escape_quotes(date)
@@ -281,9 +281,9 @@ module Svn2Git
           # If a line was read, then there was a config value so restore it.
           # Otherwise unset the value because originally there was none.
           if value.strip != ''
-            run_command("git config --local #{name} \"#{value.strip}\"")
+            run_command("#{git_config_command} #{name} \"#{value.strip}\"")
           else
-            run_command("git config --local --unset #{name}")
+            run_command("#{git_config_command} --unset #{name}")
           end
         end
       end
@@ -376,6 +376,20 @@ module Svn2Git
 
     def escape_quotes(str)
       str.gsub("'", "'\\\\''")
+    end
+
+    def git_config_command
+      if @git_config_command.nil?
+        status = run_command('git config --local --get user.name', false)
+
+        @git_config_command = if status =~ /unknown option/m
+                                'git config'
+                              else
+                                'git config --local'
+                              end
+      end
+
+      @git_config_command
     end
 
   end
