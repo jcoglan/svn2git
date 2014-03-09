@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
     "lib/svn2git/migration.rb",
     "svn2git.gemspec"
   ]
-  s.homepage = "https://www.negativetwenty.net/redmine/projects/svn2git"
+  s.homepage = "https://github.com/nirvdrum/svn2git"
   s.rubygems_version = "2.2.2"
   s.summary = "A tool for migrating svn projects to git"
 end

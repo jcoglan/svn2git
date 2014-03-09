@@ -7,7 +7,7 @@ begin
     spec.name = "svn2git"
     spec.summary = "A tool for migrating svn projects to git"
     spec.authors = ["James Coglan", "Kevin Menard"]
-    spec.homepage = "https://www.negativetwenty.net/redmine/projects/svn2git"
+    spec.homepage = "https://github.com/nirvdrum/svn2git"
     spec.email = "nirvdrum@gmail.com"
   end
   Jeweler::GemcutterTasks.new
