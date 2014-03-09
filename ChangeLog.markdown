@@ -1,8 +1,9 @@
-# 2.2.3
+# 2.2.3 - 2014-04-08
 
   This is a bugfix release. First change done by FeeJai
   * Fixed an issue with password protected svn-repositories. The prompt to enter the password is now displayed.
-  * Fixed an issue with server certificates. If the certificate is untrusted, the prompt to confirm or deny the certificate is now shown
+  * Fixed an issue with server certificates. If the certificate is untrusted, the prompt to confirm or deny the certificate is now shown.
+  * Fixed an issue with using the `--local` flag for `git config` in git versions < 1.7.4.
 
 
 # 2.2.2 - 2012-10-07
