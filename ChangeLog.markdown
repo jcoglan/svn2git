@@ -1,6 +1,13 @@
+# 2.2.4 - 2014-04-08
+
+  There was a permissions problem with some of the files packed in 2.2.3.  This was caught immediately after the gem
+  was pushed, so it was yanked as it simply wouldn't work for anyone.  2.2.4 contains everything 2.2.3 did, but with
+  proper packaging.
+
 # 2.2.3 - 2014-04-08
 
   This is a bugfix release. First change done by FeeJai
+
   * Fixed an issue with password protected svn-repositories. The prompt to enter the password is now displayed.
   * Fixed an issue with server certificates. If the certificate is untrusted, the prompt to confirm or deny the certificate is now shown.
   * Fixed an issue with using the `--local` flag for `git config` in git versions < 1.7.4.
