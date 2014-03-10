@@ -145,6 +145,14 @@ module Svn2Git
       options
     end
 
+    def self.escape_quotes(str)
+      str.gsub("'", "'\\\\''")
+    end
+
+    def escape_quotes(str)
+      Svn2Git::Migration.escape_quotes(str)
+    end
+
   private
 
     def clone!
@@ -372,10 +380,6 @@ module Svn2Git
         puts 'You have local pending changes.  The working tree must be clean in order to continue.'
         exit -1
       end
-    end
-
-    def escape_quotes(str)
-      str.gsub("'", "'\\\\''")
     end
 
     def git_config_command
