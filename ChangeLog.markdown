@@ -1,4 +1,6 @@
 # 2.2.5 - 2014-03-09
+  This is a bugfix release. It improves handling of quotes in SVN commit messages.
+
 
   * Fixed an with single quote escaping (thanks aucl).
   * Escape double quotes (e.g., if they appear in a commit message) before passing to the shell (thanks aucl).
