@@ -1,3 +1,8 @@
+# 2.2.5 - 2014-04-09
+
+  * Fixed an with single quote escaping (thanks aucl).
+  * Escape double quotes (e.g., if they appear in a commit message) before passing to the shell (thanks aucl).
+
 # 2.2.4 - 2014-04-08
 
   There was a permissions problem with some of the files packed in 2.2.3.  This was caught immediately after the gem
