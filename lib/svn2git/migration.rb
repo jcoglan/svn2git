@@ -146,7 +146,7 @@ module Svn2Git
     end
 
     def self.escape_quotes(str)
-      str.gsub("'", "'\\\\''")
+      str.gsub(/'|"/) { |c| "\\#{c}" }
     end
 
     def escape_quotes(str)
