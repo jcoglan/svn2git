@@ -1,6 +1,6 @@
 require File.expand_path(File.join(__FILE__, '..', 'test_helper'))
 
-class EscapeQuotesTest < Test::Unit::TestCase
+class EscapeQuotesTest < Minitest::Test
   def test_identity
     expected = 'A string without any need to escape.'
     actual = Svn2Git::Migration.escape_quotes(expected)
