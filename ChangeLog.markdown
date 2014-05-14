@@ -1,3 +1,10 @@
+# 2.3.0 - 2014-05-14
+  This release passes STDIN through to the underlying git-svn process, allowing users to interact with the
+  git-svn prompt.  Principally, it will allow users to choose what to do when prompted about unverified
+  SSL certificates.
+
+  * Pass STDIN through to the underlying git-svn process so users can respond to prompts.
+
 # 2.2.5 - 2014-03-09
   This is a bugfix release. It improves handling of quotes in SVN commit messages.
 
