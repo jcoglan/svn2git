@@ -1,6 +1,7 @@
 require 'optparse'
 require 'pp'
 require 'open4'
+require 'timeout'
 
 module Svn2Git
   DEFAULT_AUTHORS_FILE = "~/.svn2git/authors"
@@ -376,10 +377,12 @@ module Svn2Git
           end
         end
 
-        threads << Thread.new(stdin) do |stdin|
-          user_reply = $stdin.gets.chomp
-          stdin.puts user_reply
-          stdin.close
+        Thread.new(stdin) do |stdin|
+          until $stdin.closed?
+            user_reply = Timeout.timeout(5) { $stdin.gets.chomp }
+            stdin.puts user_reply
+            stdin.close
+          end
         end
 
         threads.each(&:join)
