@@ -342,7 +342,15 @@ module Svn2Git
       log "Running command: #{cmd}"
 
       ret = ''
-      mutex = Mutex.new
+      @mutex ||= Mutex.new
+      @stdin_queue ||= Queue.new
+
+      # We need to fetch input from the user to pass through to the underlying sub-process.  We'll constantly listen
+      # for input and place any received values on a queue for consumption by a pass-through thread that will forward
+      # the contents to the underlying sub-process's stdin pipe.
+      @stdin_thread ||= Thread.new do
+        loop { @stdin_queue << $stdin.gets.chomp }
+      end
 
       # Open4 forks, which JRuby doesn't support.  But JRuby added a popen4-compatible method on the IO class,
       # so we can use that instead.
@@ -351,7 +359,7 @@ module Svn2Git
 
         threads << Thread.new(stdout) do |stdout|
           stdout.each do |line|
-            mutex.synchronize do
+            @mutex.synchronize do
               ret << line
 
               if printout_output
@@ -364,8 +372,12 @@ module Svn2Git
         end
 
         threads << Thread.new(stderr) do |stderr|
+          # git-svn seems to do all of its prompting for user input via STDERR.  When it prompts for input, it will
+          # not terminate the line with a newline character, so we can't split the input up by newline.  It will,
+          # however, use a space to separate the user input from the prompt.  So we split on word boundaries here
+          # while draining STDERR.
           stderr.each(' ') do |word|
-            mutex.synchronize do
+            @mutex.synchronize do
               ret << word
 
               if printout_output
@@ -377,15 +389,24 @@ module Svn2Git
           end
         end
 
+        # Simple pass-through thread to take anything the user types via STDIN and passes it through to the
+        # sub-process's stdin pipe.
         Thread.new(stdin) do |stdin|
-          until $stdin.closed?
-            user_reply = Timeout.timeout(5) { $stdin.gets.chomp }
+          loop do
+            user_reply = @stdin_queue.pop
+
+            # nil is our cue to stop looping (pun intended).
+            break if user_reply.nil?
+
             stdin.puts user_reply
             stdin.close
           end
         end
 
         threads.each(&:join)
+
+        # Push nil to the stdin_queue to gracefully exit the STDIN pass-through thread.
+        @stdin_queue << nil
       end
 
       # JRuby's open4 doesn't return a Process::Status object when invoked with a block, but rather returns the
