@@ -1,5 +1,6 @@
 require 'optparse'
 require 'pp'
+require 'open4'
 
 module Svn2Git
   DEFAULT_AUTHORS_FILE = "~/.svn2git/authors"
@@ -342,7 +343,9 @@ module Svn2Git
       ret = ''
       mutex = Mutex.new
 
-      status = IO.popen4(cmd) do |pid, stdin, stdout, stderr|
+      # Open4 forks, which JRuby doesn't support.  But JRuby added a popen4-compatible method on the IO class,
+      # so we can use that instead.
+      status = (defined?(JRUBY_VERSION) ? IO : Open4).popen4(cmd) do |pid, stdin, stdout, stderr|
         threads = []
 
         threads << Thread.new(stdout) do |stdout|

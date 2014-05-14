@@ -11,6 +11,7 @@ begin
     spec.homepage = "https://github.com/nirvdrum/svn2git"
     spec.email = "nirvdrum@gmail.com"
     spec.add_development_dependency 'test-unit'
+    spec.add_dependency 'open4'
   end
   Jeweler::GemcutterTasks.new
   
