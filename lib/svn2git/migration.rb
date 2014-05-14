@@ -340,23 +340,54 @@ module Svn2Git
       log "Running command: #{cmd}"
 
       ret = ''
+      mutex = Mutex.new
 
-      cmd = "2>&1 #{cmd}"
-      IO.popen(cmd) do |stdout|
-        if printout_output
-          stdout.each_char do |character|
-            $stdout.print character
-            ret << character
-          end
-        else
+      status = IO.popen4(cmd) do |pid, stdin, stdout, stderr|
+        threads = []
+
+        threads << Thread.new(stdout) do |stdout|
           stdout.each do |line|
-            log line
-            ret << line
+            mutex.synchronize do
+              ret << line
+
+              if printout_output
+                $stdout.print line
+              else
+                log line
+              end
+            end
           end
         end
+
+        threads << Thread.new(stderr) do |stderr|
+          stderr.each(' ') do |word|
+            mutex.synchronize do
+              ret << word
+
+              if printout_output
+                $stdout.print word
+              else
+                log word
+              end
+            end
+          end
+        end
+
+        threads << Thread.new(stdin) do |stdin|
+          user_reply = $stdin.gets.chomp
+          stdin.puts user_reply
+          stdin.close
+        end
+
+        threads.each(&:join)
       end
 
-      if exit_on_error && ($?.exitstatus != 0)
+      # JRuby's open4 doesn't return a Process::Status object when invoked with a block, but rather returns the
+      # block expression's value.  The Process::Status is stored as $?, so we need to normalize the status
+      # object if on JRuby.
+      status = $? if defined?(JRUBY_VERSION)
+
+      if exit_on_error && (status.exitstatus != 0)
         $stderr.puts "command failed:\n#{cmd}"
         exit -1
       end
