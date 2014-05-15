@@ -155,6 +155,10 @@ module Svn2Git
       Svn2Git::Migration.escape_quotes(str)
     end
 
+    def self.checkout_svn_branch(branch)
+      "git checkout -b \"#{branch}\" \"remotes/svn/#{branch}\""
+    end
+
   private
 
     def clone!
@@ -318,8 +322,36 @@ module Svn2Git
         end
 
         next if branch == 'trunk' || @local.include?(branch)
-        run_command("git branch --track \"#{branch}\" \"remotes/svn/#{branch}\"")
-        run_command("git checkout \"#{branch}\"")
+
+        if @cannot_setup_tracking_information
+          run_command(Svn2Git::Migration.checkout_svn_branch(branch))
+        else
+          status = run_command("git branch --track \"#{branch}\" \"remotes/svn/#{branch}\"", false)
+
+          # As of git 1.8.3.2, tracking information cannot be set up for remote SVN branches:
+          # http://git.661346.n2.nabble.com/git-svn-Use-prefix-by-default-td7594288.html#a7597159
+          #
+          # Older versions of git can do it and it should be safe as long as remotes aren't pushed.
+          # Our --rebase option obviates the need for read-only tracked remotes, however.  So, we'll
+          # deprecate the old option, informing those relying on the old behavior that they should
+          # use the newer --rebase otion.
+          if status =~ /Cannot setup tracking information/m
+            @cannot_setup_tracking_information = true
+            run_command(Svn2Git::Migration.checkout_svn_branch(branch))
+          else
+            unless @legacy_svn_branch_tracking_message_displayed
+              warn '*' * 68
+              warn "svn2git warning: Tracking remote SVN branches is deprecated."
+              warn "In a future release local branches will be created without tracking."
+              warn "If you must resync your branches, run: svn2git --rebase"
+              warn '*' * 68
+            end
+
+            @legacy_svn_branch_tracking_message_displayed = true
+
+            run_command("git checkout \"#{branch}\"")
+          end
+        end
       end
     end
 
