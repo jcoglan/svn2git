@@ -339,7 +339,7 @@ module Svn2Git
     end
 
     def run_command(cmd, exit_on_error=true, printout_output=false)
-      log "Running command: #{cmd}"
+      log "Running command: #{cmd}\n"
 
       ret = ''
       @mutex ||= Mutex.new
@@ -423,7 +423,7 @@ module Svn2Git
     end
 
     def log(msg)
-      puts msg if @options[:verbose]
+      print msg if @options[:verbose]
     end
 
     def show_help_message(msg)
