@@ -10,9 +10,9 @@ begin
     spec.authors = ["James Coglan", "Kevin Menard"]
     spec.homepage = "https://github.com/nirvdrum/svn2git"
     spec.email = "nirvdrum@gmail.com"
+    spec.license = 'MIT'
     spec.add_development_dependency 'test-unit'
     spec.add_dependency 'open4'
-    spec.license 'MIT'
   end
   Jeweler::GemcutterTasks.new
   
