@@ -1,4 +1,27 @@
+# 2.3.1 - 2014-05-14
+
+  This is a critical bugfix release if you're running git >= 1.8.3.2.  In the days of svn2git 1.x we supported syncing
+  local branches with upstream by tracking the branch as we set them up.  This allowed one to checkout the branch and
+  issue a "git pull" to fetch the changes.  git-svn ceased allowing this in 1.8.3.2, which broke svn2git with that
+  version of git and all subsequent versions.  The rationale seemed to be in order to prevent pushing changes from
+  git-svn back up and breaking the remote link, but this was never something svn2git supported anyway.
+  
+  Acknowledging the new reality of upstream, the old behavior is retained but deprecated for users of git < 1.8.3.2.
+  We'll be removing the establishment of remote tracking SVN branches in the 2.5.0 release.  If you wish to sync back
+  with upstream, run `svn2git --rebase`.  If you're on git >= 1.8.3.2 your only option for resynchronizing is to
+  use `svn2git --rebase`.
+  
+  Many thanks to ktdreyer for modernizing the test suite and Daniel Ruf (DanielRuf) for pushing on the git compatibility
+  issue.
+  
+  * Fixed creating local branches for remote SVN branches in git >= 1.8.3.2.
+  * Fixed verbose logging of sub-process STDERR stream.
+  * Added MIT license metadata to gemspec.
+  * Switched to minitest to get tests working on Ruby 1.9+ with minitest 5+ installed.
+  
+
 # 2.3.0 - 2014-05-14
+
   This release passes STDIN through to the underlying git-svn process, allowing users to interact with the
   git-svn prompt.  Principally, it will allow users to choose what to do when prompted about unverified
   SSL certificates.
@@ -6,6 +29,7 @@
   * Pass STDIN through to the underlying git-svn process so users can respond to prompts.
 
 # 2.2.5 - 2014-03-09
+
   This is a bugfix release. It improves handling of quotes in SVN commit messages.
 
 
@@ -20,7 +44,7 @@
 
 # 2.2.3 - 2014-03-08
 
-  This is a bugfix release. First change done by FeeJai
+  This is a bugfix release. First change done by FeeJai.
 
   * Fixed an issue with password protected svn-repositories. The prompt to enter the password is now displayed.
   * Fixed an issue with server certificates. If the certificate is untrusted, the prompt to confirm or deny the certificate is now shown.
