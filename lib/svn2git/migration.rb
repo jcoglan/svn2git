@@ -1,6 +1,5 @@
 require 'optparse'
 require 'pp'
-require 'open4'
 require 'timeout'
 
 module Svn2Git
@@ -374,7 +373,6 @@ module Svn2Git
       log "Running command: #{cmd}\n"
 
       ret = ''
-      @mutex ||= Mutex.new
       @stdin_queue ||= Queue.new
 
       # We need to fetch input from the user to pass through to the underlying sub-process.  We'll constantly listen
@@ -386,44 +384,28 @@ module Svn2Git
 
       # Open4 forks, which JRuby doesn't support.  But JRuby added a popen4-compatible method on the IO class,
       # so we can use that instead.
-      status = (defined?(JRUBY_VERSION) ? IO : Open4).popen4(cmd) do |pid, stdin, stdout, stderr|
+      IO.popen("2>&1 #{cmd}") do |output|
         threads = []
 
-        threads << Thread.new(stdout) do |stdout|
-          stdout.each do |line|
-            @mutex.synchronize do
-              ret << line
-
-              if printout_output
-                $stdout.print line
-              else
-                log line
-              end
-            end
-          end
-        end
-
-        threads << Thread.new(stderr) do |stderr|
+        threads << Thread.new(output) do |output|
           # git-svn seems to do all of its prompting for user input via STDERR.  When it prompts for input, it will
           # not terminate the line with a newline character, so we can't split the input up by newline.  It will,
           # however, use a space to separate the user input from the prompt.  So we split on word boundaries here
           # while draining STDERR.
-          stderr.each(' ') do |word|
-            @mutex.synchronize do
-              ret << word
+          output.each(' ') do |word|
+            ret << word
 
-              if printout_output
-                $stdout.print word
-              else
-                log word
-              end
+            if printout_output
+              $stdout.print word
+            else
+              log word
             end
           end
         end
 
         # Simple pass-through thread to take anything the user types via STDIN and passes it through to the
         # sub-process's stdin pipe.
-        Thread.new(stdin) do |stdin|
+        Thread.new do
           loop do
             user_reply = @stdin_queue.pop
 
@@ -441,12 +423,7 @@ module Svn2Git
         @stdin_queue << nil
       end
 
-      # JRuby's open4 doesn't return a Process::Status object when invoked with a block, but rather returns the
-      # block expression's value.  The Process::Status is stored as $?, so we need to normalize the status
-      # object if on JRuby.
-      status = $? if defined?(JRUBY_VERSION)
-
-      if exit_on_error && (status.exitstatus != 0)
+      if exit_on_error && $?.exitstatus != 0
         $stderr.puts "command failed:\n#{cmd}"
         exit -1
       end
