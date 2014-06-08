@@ -1,6 +1,7 @@
 require 'optparse'
 require 'pp'
 require 'timeout'
+require 'thread'
 
 module Svn2Git
   DEFAULT_AUTHORS_FILE = "~/.svn2git/authors"
