@@ -1,3 +1,11 @@
+# 2.3.2 - 2014-06-08
+
+  This is a bugfix release. It fixes issues running with Windows using MRI ruby and fixes a problem with Ruby 1.8.7.
+  
+  * Removed open4 dependency. svn2git no longer has any runtime dependencies and things work well on Windows again.
+  * Fixed an issue with Ruby 1.8.7, which doesn't implicitly require the 'thread' library meaning classes that library weren't in scope.
+
+
 # 2.3.1 - 2014-05-14
 
   This is a critical bugfix release if you're running git >= 1.8.3.2.  In the days of svn2git 1.x we supported syncing
