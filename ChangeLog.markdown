@@ -1,3 +1,13 @@
+# 2.4.0 - 2016-10-30
+
+  This release introduces the ability to supply a password for SVN repositories that can't authenticate by other means.
+  It also adds the ability to specify the '--branches' and '--tags' arguments multiple times to better support those with
+  more complicated SVN repository layouts.
+
+  * Added support for the '--password' option for authentication (thanks edpbx).
+  * Added the ability to specify the '--branches' and '--tags' arguments multiple times (thanks pdf).
+  * Fixed a problem with processing of the '--exclude' argument (improper quoting internally) (thanks pdf).
+
 # 2.3.2 - 2014-06-08
 
   This is a bugfix release. It fixes issues running with Windows using MRI ruby and fixes a problem with Ruby 1.8.7.
